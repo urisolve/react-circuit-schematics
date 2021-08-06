@@ -5,7 +5,7 @@ import { Connection } from '../../components/Connection'
 import { Node } from '../../components/Node'
 
 export default {
-  title: 'Custom Logic/Connection',
+  title: 'Low Level/Connection',
   component: Connection,
   argTypes: {
     start: { control: '' },

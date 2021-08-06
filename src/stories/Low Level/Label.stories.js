@@ -2,7 +2,7 @@ import React from 'react'
 import { Label } from '../../components/Label'
 
 export default {
-  title: 'Custom Logic/Label',
+  title: 'Low Level/Label',
   component: Label,
   parameters: {
     docs: {

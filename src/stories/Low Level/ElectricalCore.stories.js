@@ -5,7 +5,7 @@ import { Schematic } from '../../components/Schematic'
 import ANDGate from './and-gate.png'
 
 export default {
-  title: 'Basic/ElectricalCore',
+  title: 'Low Level/ElectricalCore',
   component: ElectricalCore,
   parameters: {
     docs: {

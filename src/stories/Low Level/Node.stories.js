@@ -2,7 +2,7 @@ import React from 'react'
 import { Node } from '../../components/Node'
 
 export default {
-  title: 'Custom Logic/Node',
+  title: 'Low Level/Node',
   component: Node,
   parameters: {
     docs: {
