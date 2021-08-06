@@ -5,7 +5,7 @@ import { Connection } from '../../components/Connection'
 import { Node } from '../../components/Node'
 
 export default {
-  title: 'Low Level/Connection',
+  title: 'Low Level API/Connection',
   component: Connection,
   argTypes: {
     start: { control: '' },

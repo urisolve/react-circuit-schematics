@@ -6,7 +6,7 @@ import { useSchematic } from '../../hooks/useSchematic'
 import { RLC_Circuit } from './RLC_Circuit'
 
 export default {
-  title: 'High Level/Schematic',
+  title: 'High Level API/Schematic',
   component: Schematic,
   parameters: {
     docs: {

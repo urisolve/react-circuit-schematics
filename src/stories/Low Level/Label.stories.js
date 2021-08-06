@@ -2,7 +2,7 @@ import React from 'react'
 import { Label } from '../../components/Label'
 
 export default {
-  title: 'Low Level/Label',
+  title: 'Low Level API/Label',
   component: Label,
   parameters: {
     docs: {

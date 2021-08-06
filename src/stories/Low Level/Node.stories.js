@@ -2,7 +2,7 @@ import React from 'react'
 import { Node } from '../../components/Node'
 
 export default {
-  title: 'Low Level/Node',
+  title: 'Low Level API/Node',
   component: Node,
   parameters: {
     docs: {

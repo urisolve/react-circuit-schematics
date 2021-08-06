@@ -2,7 +2,7 @@ import React from 'react'
 import { Port } from '../../components/Port'
 
 export default {
-  title: 'Low Level/Port',
+  title: 'Low Level API/Port',
   component: Port,
   parameters: {
     docs: {
