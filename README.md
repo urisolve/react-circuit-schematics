@@ -7,8 +7,14 @@
 
 ## Install
 
+You can install this library with any package manager that supports npm modules.
+
 ```bash
-npm i react-circuit-schematics
+npm install react-circuit-schematics
+```
+
+```bash
+yarn add react-circuit-schematics
 ```
 
 ## Usage
