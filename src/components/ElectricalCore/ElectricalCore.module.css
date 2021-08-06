@@ -1,0 +1,12 @@
+/* Remove the ability to select and drag the image */
+.noDrag {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* Forces <Draggable /> to fit it's content */
+.wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
