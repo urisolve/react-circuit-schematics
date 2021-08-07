@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import throttle from 'lodash.throttle'
+import { throttle } from 'lodash'
 
 import { snapToGrid } from '../../util'
 
@@ -19,6 +19,7 @@ export const useMouseGrid = (ref, gridSize) => {
   )
 
   useEffect(() => {
+    if (!ref.current) return
     ref.current.addEventListener('mousemove', updateMousePosition)
 
     return () => {
