@@ -14,6 +14,7 @@ export const Connection = forwardRef(
       type,
       properties,
       gridSize,
+      gridBreak,
       onClick,
       onLabelDragStop,
       ...rest
@@ -27,7 +28,7 @@ export const Connection = forwardRef(
           end={end}
           path={type}
           showHead={false}
-          gridBreak={1}
+          gridBreak={`${gridBreak}`}
           divContainerStyle={{ zIndex: -1, opacity: properties.opacity ?? 1 }}
           passProps={{ onClick }}
           {...rest}
@@ -93,6 +94,14 @@ Connection.propTypes = {
     opacity: PropTypes.number
   }),
   /**
+   * The size of the grid the Label should move in
+   */
+  gridSize: PropTypes.number,
+  /**
+   * The part of the connection that there should be a 90deg angle
+   */
+  gridBreak: PropTypes.number,
+  /**
    * The callback to execute when clicking on the connection
    */
   onClick: PropTypes.func
@@ -105,5 +114,6 @@ Connection.defaultProps = {
     stroke: 2,
     decoration: {},
     opacity: 1
-  }
+  },
+  gridBreak: 0
 }
