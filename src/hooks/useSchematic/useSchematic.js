@@ -3,6 +3,7 @@ import { cloneDeep, isEqual, isFunction } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
 import { useHistory } from '../useHistory'
+import { isComponent, isConnection } from '../../util'
 
 /**
  * A React Hook that takes care of the logic required to run a schematic.
@@ -52,12 +53,11 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
         const newSchematic = cloneDeep(oldSchematic)
 
         // Where should the element be added?
-        let where = 'nodes'
-        if (Object.prototype.hasOwnProperty.call(element, 'ports')) {
-          where = 'components'
-        } else if (Object.prototype.hasOwnProperty.call(element, 'start')) {
-          where = 'connections'
-        }
+        const where = isComponent(element)
+          ? 'components'
+          : isConnection(element)
+          ? 'connections'
+          : 'nodes'
 
         // Add the new element to the schematic
         newSchematic[where].push({ id: uuidv4(), ...element })
