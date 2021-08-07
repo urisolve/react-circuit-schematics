@@ -6,19 +6,25 @@ import React, {
   forwardRef
 } from 'react'
 import PropTypes from 'prop-types'
+import { throttle } from 'lodash'
 
 import { areasIntersect } from '../../util'
 
 /**
  * A React Hook that aids with the selection of HTML elements.
  *
- * @param {Ref} ref A reference to the event element.
- * @param {Array} selectableItems A list of all the possible selectable items.
  * @param {Function} getRef A function that allows you to retrieve the refs of
  * components based on their id. See `use-dynamic-refs` hook for more info.
+ * @param {Array} selectableItems A list of all the possible selectable items.
+ * @param {Ref} parentRef A reference to the event element.
  * @param {Number} fps How many frames per second the dragging should have.
  */
-export const useSelection = (selectableItems, getRef, parentRef = window) => {
+export const useSelection = (
+  getRef,
+  selectableItems = [],
+  parentRef = window,
+  fps = 30
+) => {
   const selectionArea = useRef({ left: 0, top: 0, width: 0, height: 0 })
   const selectableAreas = useRef([])
   const parentRect = useRef()
@@ -28,7 +34,7 @@ export const useSelection = (selectableItems, getRef, parentRef = window) => {
   const [selectedItems, setSelectedItems] = useState(new Set())
 
   /**
-   * Calculate the areas of all the selectable items.
+   * Calculate the areas of the elements
    */
   useEffect(() => {
     // Calculate the bounding area of the parent element
@@ -99,10 +105,12 @@ export const useSelection = (selectableItems, getRef, parentRef = window) => {
    * Handler for moving the mouse.
    */
   const onMouseMove = useCallback(
-    (e) => {
+    throttle((e) => {
       // Calculate the selected area
-      selectionArea.current.width += e.movementX
-      selectionArea.current.height += e.movementY
+      selectionArea.current.width =
+        e.clientX - parentRect.current.left - selectionArea.current.left
+      selectionArea.current.height =
+        e.clientY - parentRect.current.top - selectionArea.current.top
 
       // Calculate which elements are being selected
       const items = new Set()
@@ -110,10 +118,8 @@ export const useSelection = (selectableItems, getRef, parentRef = window) => {
         if (areasIntersect(selectionArea.current, area)) items.add(area.id)
       setSelectingItems(items)
 
-      console.log(items)
-
       e.preventDefault()
-    },
+    }, 1000 / fps),
     [isDragging, setSelectingItems]
   )
 

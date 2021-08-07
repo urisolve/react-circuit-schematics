@@ -22,7 +22,7 @@ export const Schematic = ({
   const [getRef, setRef] = useDynamicRefs()
 
   const ref = useRef()
-  const SelectionArea = useSelection(schematic.items, getRef, ref)
+  const SelectionArea = useSelection(getRef, schematic.items, ref)
 
   /**
    * Update the coordinates of a Component.
