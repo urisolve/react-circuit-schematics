@@ -29,7 +29,8 @@ export const Connection = forwardRef(
           path={type}
           showHead={false}
           gridBreak={gridBreak + '%'}
-          divContainerStyle={{ zIndex: -1, opacity: properties.opacity ?? 1 }}
+          zIndex={-1}
+          divContainerStyle={{ opacity: properties.opacity ?? 1 }}
           passProps={{ onClick }}
           {...rest}
         />
