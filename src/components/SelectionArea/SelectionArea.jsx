@@ -188,8 +188,8 @@ export const SelectionArea = forwardRef(
           display: isDragging ? 'inline-block' : 'none',
 
           // Editable
-          backgroundColor: 'rgba(0, 0, 255, 0.25)',
-          border: '1px solid rgba(0, 0, 255, 0.75)',
+          backgroundColor: 'rgba(100, 149, 237, 0.25)',
+          border: '1px solid rgba(100, 149, 237, 0.75)',
           zIndex: 99,
           ...style
         }}
