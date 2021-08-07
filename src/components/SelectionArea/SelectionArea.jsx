@@ -32,6 +32,7 @@ export const SelectionArea = forwardRef(
     },
     ref
   ) => {
+    const [isDragging, setIsDragging] = useState(false)
     const selectableAreas = useRef([])
     const parentRect = useRef(null)
     const startPoint = useRef(null)
