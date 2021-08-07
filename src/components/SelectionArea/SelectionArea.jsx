@@ -130,19 +130,19 @@ export const SelectionArea = forwardRef(
           top: event.pageY - parentRect.current.top
         }
 
-        // Calculate the width and height of the selection area
-        selectionArea.current.width = endPoint.left - startPoint.current.left
-        selectionArea.current.height = endPoint.top - startPoint.current.top
-
-        // Calculate the position of the selection area
-        selectionArea.current.left =
-          selectionArea.current.width > 0
-            ? startPoint.current.left
-            : endPoint.left
-        selectionArea.current.top =
-          selectionArea.current.height > 0
-            ? startPoint.current.top
-            : endPoint.top
+        // Calculate the selection area
+        selectionArea.current = {
+          height: endPoint.top - startPoint.current.top,
+          width: endPoint.left - startPoint.current.left,
+          top:
+            endPoint.top - startPoint.current.top > 0
+              ? startPoint.current.top
+              : endPoint.top,
+          left:
+            endPoint.left - startPoint.current.left > 0
+              ? startPoint.current.left
+              : endPoint.left
+        }
 
         // Calculate which elements are being selected
         const items = new Set()
