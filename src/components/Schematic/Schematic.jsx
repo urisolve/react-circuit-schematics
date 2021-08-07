@@ -1,14 +1,13 @@
-import React, { useRef, useCallback } from 'react'
+import React, { useCallback, useRef } from 'react'
 import useDynamicRefs from 'use-dynamic-refs'
-
 import PropTypes from 'prop-types'
 
-import { snapToGrid } from '../../util'
-import { useMouseGrid } from '../../hooks/useMouseGrid'
 import { ElectricalCore } from '../ElectricalCore'
 import { Connection } from '../Connection'
 import { Node } from '../Node'
-import { ConnectionPoint } from '../ConnectionPoint'
+
+import { useSelection } from '../../hooks/useSelection'
+import { snapToGrid } from '../../util'
 
 export const Schematic = ({
   schematic,
@@ -22,8 +21,8 @@ export const Schematic = ({
 }) => {
   const [getRef, setRef] = useDynamicRefs()
 
-  const canvasRef = useRef()
-  const mousePosition = useMouseGrid(canvasRef, gridSize)
+  const ref = useRef()
+  const SelectionArea = useSelection(schematic.items, getRef, ref)
 
   /**
    * Update the coordinates of a Component.
@@ -74,7 +73,7 @@ export const Schematic = ({
   return (
     <div
       className='schematic'
-      ref={canvasRef}
+      ref={ref}
       style={{
         width,
         height,
@@ -92,19 +91,8 @@ export const Schematic = ({
       }}
       {...rest}
     >
-      {/*
-      <SelectableGroup
-        clickClassName='rdc-handle'
-        duringSelection={selection.handleSelecting}
-        onSelectionFinish={selection.handleSelected}
-        enableDeselect
-        resetOnStart
-        deselectOnEsc
-        >
-      */}
+      <SelectionArea />
       {children}
-
-      <ConnectionPoint ref={setRef('mouse')} position={mousePosition} />
 
       {schematic?.data?.components?.map((comp) => {
         comp.ports.forEach((port) => (port.ref = setRef(port.id)))
@@ -112,6 +100,7 @@ export const Schematic = ({
           <ElectricalCore
             {...comp}
             key={comp.id}
+            ref={setRef(comp.id)}
             gridSize={gridSize}
             onDragStop={handleComponentDragStop}
             onLabelDragStop={handleLabelDragStop}
@@ -139,6 +128,7 @@ export const Schematic = ({
             <Connection
               {...conn}
               key={conn.id}
+              ref={setRef(conn.id)}
               start={getRef(conn.start)}
               end={getRef(conn.end)}
               gridSize={gridSize}
@@ -147,9 +137,6 @@ export const Schematic = ({
             />
           )
       )}
-      {/*
-        </SelectableGroup>
-      */}
     </div>
   )
 }
