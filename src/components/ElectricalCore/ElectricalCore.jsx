@@ -18,7 +18,8 @@ export const ElectricalCore = forwardRef(
       position,
       label,
       ports,
-      size,
+      width,
+      height,
       gridSize,
       altImageIdx,
       imgPath,
@@ -87,14 +88,15 @@ export const ElectricalCore = forwardRef(
               className={cx(styles.noDrag, 'component-handle')}
               style={{
                 transform: `rotate(${position?.angle ?? 0}deg)`,
-                width: size,
+              width: width,
+              height: height,
 
-                // Selection
-                filter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
-                WebkitFilter:
-                  isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`
-              }}
-              onClick={onClick}
+              // Selection
+              filter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
+              WebkitFilter:
+                isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`
+            }}
+            onClick={onClick}
               ref={boundingRef}
               src={src}
               alt={type}
@@ -106,7 +108,7 @@ export const ElectricalCore = forwardRef(
               <Port
                 key={port.id}
                 ref={getRef(port.id)}
-                bounds={bounds}
+                bounds={{ width, height }}
                 onClick={() => handlePortClick?.(port.id)}
                 rotation={position?.angle}
                 {...rest}
@@ -177,9 +179,13 @@ ElectricalCore.propTypes = {
     })
   ),
   /**
-   * The size of the component
+   * The width of the component, in pixels
    */
-  size: PropTypes.number,
+  width: PropTypes.number,
+  /**
+   * The height of the component, in pixels
+   */
+  height: PropTypes.number,
   /**
    * The size of the grid, i.e., the amount of pixels the drag skips
    */
@@ -196,7 +202,8 @@ ElectricalCore.propTypes = {
 
 ElectricalCore.defaultProps = {
   position: { x: 0, y: 0 },
-  size: 100,
+  width: 100,
+  height: 100,
   gridSize: 10,
   altImageIdx: 0
 }

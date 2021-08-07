@@ -27,10 +27,10 @@ export const Port = forwardRef(
 
       // Scale the position to fit the bounds
       return {
-        x: x * bounds.x - properties.radius,
-        y: y * bounds.y - properties.radius
+        left: x * bounds.width - properties.radius,
+        top: y * bounds.height - properties.radius
       }
-    }, [position, rotation, bounds, properties?.radius])
+    }, [position, rotation, properties?.radius])
 
     return (
       <div
@@ -44,8 +44,7 @@ export const Port = forwardRef(
           backgroundColor: properties.color,
 
           // The positioning of the port
-          left: realPos.x,
-          top: realPos.y
+          ...realPos
         }}
         {...rest}
       >
