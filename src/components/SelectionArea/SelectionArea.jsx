@@ -28,6 +28,7 @@ export const SelectionArea = forwardRef(
       parentRef = window,
       fps = 30,
       style,
+      disabled,
       ...rest
     },
     ref
@@ -69,6 +70,8 @@ export const SelectionArea = forwardRef(
      */
     const onMouseDown = useCallback(
       (event) => {
+        if (disabled) return
+
         // Only allow left clicks
         if (event.which !== 1) return
 

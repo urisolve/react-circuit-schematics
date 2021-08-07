@@ -103,6 +103,7 @@ export const Schematic = ({
           setSelectingItems={setSelectingItems}
           selectedItems={selectedItems}
           setSelectedItems={setSelectedItems}
+          disabled={readOnly}
         />
 
         {schematic?.data?.components?.map((comp) => {
