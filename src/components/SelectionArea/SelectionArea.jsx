@@ -132,8 +132,8 @@ export const SelectionArea = forwardRef(
 
         // Calculate the selection area
         selectionArea.current = {
-          height: endPoint.top - startPoint.current.top,
-          width: endPoint.left - startPoint.current.left,
+          height: Math.abs(endPoint.top - startPoint.current.top),
+          width: Math.abs(endPoint.left - startPoint.current.left),
           top:
             endPoint.top - startPoint.current.top > 0
               ? startPoint.current.top
@@ -195,8 +195,8 @@ export const SelectionArea = forwardRef(
         ref={ref}
         style={{
           // Non-Editable
-          width: Math.abs(selectionArea.current.width ?? 0),
-          height: Math.abs(selectionArea.current.height ?? 0),
+          width: selectionArea.current.width ?? 0,
+          height: selectionArea.current.height ?? 0,
           position: 'absolute',
           transform: `translate(${selectionArea.current.left ?? 0}px, ${
             selectionArea.current.top ?? 0
