@@ -20,6 +20,11 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
   })
 
   /**
+   * Save previous schematic history
+   */
+  const history = useHistory(setSchematic, maxHistoryLength)
+
+  /**
    * Place all elements into a single array.
    * It's useful for iterating through all of schematic's elements.
    */
@@ -31,8 +36,6 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
     ],
     [schematic]
   )
-
-  const history = useHistory(setSchematic, maxHistoryLength)
 
   /**
    * Adds an element to the schematic.
