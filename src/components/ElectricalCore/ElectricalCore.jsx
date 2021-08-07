@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useMemo, forwardRef } from 'react'
 import useDynamicRefs from 'use-dynamic-refs'
 import Draggable from 'react-draggable'
+import { useXarrow } from 'react-xarrows'
 import PropTypes from 'prop-types'
 
 import styles from './ElectricalCore.module.css'
@@ -35,9 +36,7 @@ export const ElectricalCore = forwardRef(
     const [getRef] = useDynamicRefs()
     const draggableRef = useRef()
 
-    const boundingRef = useRef()
-    const [bounds, setBounds] = useState({ x: 0, y: 0 })
-    const [renderCount, setRenderCount] = useState(0)
+    const updateXarrow = useXarrow()
 
     /**
      * Calculate which SVG to use.
@@ -79,6 +78,7 @@ export const ElectricalCore = forwardRef(
         position={position}
         positionOffset={{ x: 5, y: 5 }}
         grid={[gridSize, gridSize]}
+        onDrag={updateXarrow}
         onStop={(e, position) => onDragStop(id, position)}
         {...rest}
       >

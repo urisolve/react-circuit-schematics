@@ -1,5 +1,6 @@
 import React, { forwardRef, useRef } from 'react'
 import Draggable from 'react-draggable'
+import { useXarrow } from 'react-xarrows'
 import { PropTypes } from 'prop-types'
 
 import cx from 'classnames'
@@ -22,6 +23,7 @@ export const Node = forwardRef(
     ref
   ) => {
     const draggableRef = useRef()
+    const updateXarrow = useXarrow()
 
     return (
       <Draggable
@@ -30,6 +32,7 @@ export const Node = forwardRef(
         position={position}
         nodeRef={draggableRef}
         grid={[gridSize, gridSize]}
+        onDrag={updateXarrow}
         onStop={(e, position) => onDragStop(id, position)}
         {...rest}
       >
