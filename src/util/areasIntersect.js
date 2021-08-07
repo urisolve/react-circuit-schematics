@@ -9,4 +9,7 @@
  * @returns {Boolean} If the two areas overlap
  */
 export const areasIntersect = (a, b) =>
-  a.x1 < b.x2 && a.x2 > b.x1 && a.y1 < b.y2 && a.y2 > b.y1
+  a.left < b.left + b.width &&
+  a.left + a.width > b.left &&
+  a.top < b.top + b.height &&
+  a.top + a.height > b.top
