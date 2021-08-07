@@ -44,15 +44,20 @@ export const SelectionArea = forwardRef(
       // Calculate the bounding area of the parent element
       const { left, top, width, height } =
         parentRef.current.getBoundingClientRect()
-      parentRect.current = { left, top, width, height }
+      parentRect.current = {
+        left: left + window.scrollX,
+        top: top + window.scrollY,
+        width,
+        height
+      }
 
       // Calculate the bounding areas of the items
       for (const elem of selectableItems) {
         const rect = getRef(elem.id).current.getBoundingClientRect()
         selectableAreas.current.push({
           id: elem.id,
-          left: rect.left - parentRect.current.left,
-          top: rect.top - parentRect.current.top,
+          left: rect.left + window.scrollX - parentRect.current.left,
+          top: rect.top + window.scrollY - parentRect.current.top,
           width: rect.width,
           height: rect.height
         })
@@ -91,8 +96,8 @@ export const SelectionArea = forwardRef(
 
         // Calculate click point
         startPoint.current = {
-          left: event.clientX - parentRect.current.left,
-          top: event.clientY - parentRect.current.top
+          left: event.pageX - parentRect.current.left,
+          top: event.pageY - parentRect.current.top
         }
 
         // Reset the selection area
@@ -121,8 +126,8 @@ export const SelectionArea = forwardRef(
       throttle((event) => {
         // Calculate the current position of mouse
         const endPoint = {
-          left: event.clientX - parentRect.current.left,
-          top: event.clientY - parentRect.current.top
+          left: event.pageX - parentRect.current.left,
+          top: event.pageY - parentRect.current.top
         }
 
         // Calculate the width and height of the selection area
