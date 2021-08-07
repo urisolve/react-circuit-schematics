@@ -1,5 +1,6 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import useDynamicRefs from 'use-dynamic-refs'
+import { Xwrapper } from 'react-xarrows'
 import PropTypes from 'prop-types'
 
 import { SelectionArea } from '../SelectionArea'
@@ -21,6 +22,9 @@ export const Schematic = ({
 }) => {
   const [getRef, setRef] = useDynamicRefs()
   const canvasRef = useRef()
+
+  const [selectingItems, setSelectingItems] = useState(new Set())
+  const [selectedItems, setSelectedItems] = useState(new Set())
 
   /**
    * Update the coordinates of a Component.
@@ -88,56 +92,66 @@ export const Schematic = ({
       }}
       {...rest}
     >
-      {children}
-      <SelectionArea
-        getRef={getRef}
-        selectableItems={schematic.items}
-        parentRef={canvasRef}
-      />
+      <Xwrapper>
+        {children}
 
-      {schematic?.data?.components?.map((comp) => {
-        comp.ports.forEach((port) => (port.ref = setRef(port.id)))
-        return (
-          <ElectricalCore
-            {...comp}
-            key={comp.id}
-            ref={setRef(comp.id)}
-            gridSize={gridSize}
-            onDragStop={handleComponentDragStop}
-            onLabelDragStop={handleLabelDragStop}
-            disabled={readOnly}
-          />
-        )
-      })}
-
-      {schematic?.data?.nodes?.map((node) => (
-        <Node
-          {...node}
-          key={node.id}
-          ref={setRef(node.id)}
-          gridSize={gridSize}
-          onDragStop={handleComponentDragStop}
-          onLabelDragStop={handleLabelDragStop}
-          disabled={readOnly}
+        <SelectionArea
+          getRef={getRef}
+          selectableItems={schematic.items}
+          parentRef={canvasRef}
+          selectingItems={selectingItems}
+          setSelectingItems={setSelectingItems}
+          selectedItems={selectedItems}
+          setSelectedItems={setSelectedItems}
         />
-      ))}
 
-      {schematic?.data?.connections?.map(
-        (conn) =>
-          conn.start &&
-          conn.end && (
-            <Connection
-              {...conn}
-              key={conn.id}
-              ref={setRef(conn.id)}
-              start={getRef(conn.start)}
-              end={getRef(conn.end)}
+        {schematic?.data?.components?.map((comp) => {
+          comp.ports.forEach((port) => (port.ref = setRef(port.id)))
+          return (
+            <ElectricalCore
+              {...comp}
+              key={comp.id}
+              ref={setRef(comp.id)}
               gridSize={gridSize}
+              onDragStop={handleComponentDragStop}
               onLabelDragStop={handleLabelDragStop}
+              isSelected={selectedItems.has(comp.id)}
               disabled={readOnly}
             />
           )
-      )}
+        })}
+
+        {schematic?.data?.nodes?.map((node) => (
+          <Node
+            {...node}
+            key={node.id}
+            ref={setRef(node.id)}
+            gridSize={gridSize}
+            onDragStop={handleComponentDragStop}
+            onLabelDragStop={handleLabelDragStop}
+            isSelected={selectedItems.has(node.id)}
+            disabled={readOnly}
+          />
+        ))}
+
+        {schematic?.data?.connections?.map(
+          (conn) =>
+            conn.start &&
+            conn.end && (
+              <Connection
+                {...conn}
+                key={conn.id}
+                ref={setRef(conn.id)}
+                start={getRef(conn.start)}
+                end={getRef(conn.end)}
+                gridSize={gridSize}
+                onLabelDragStop={handleLabelDragStop}
+                isSelected={selectedItems.has(conn.id)}
+                disabled={readOnly}
+              />
+            )
+        )}
+      </Xwrapper>
     </div>
   )
 }

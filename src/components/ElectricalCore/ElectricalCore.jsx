@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useMemo, forwardRef } from 'react'
+import React, { useRef, useMemo, forwardRef } from 'react'
 import useDynamicRefs from 'use-dynamic-refs'
 import Draggable from 'react-draggable'
 import { useXarrow } from 'react-xarrows'
@@ -54,22 +54,6 @@ export const ElectricalCore = forwardRef(
       return Array.isArray(src) ? src[altImageIdx ?? 0] : src
     }, [altImageIdx])
 
-    /**
-     * Calculate the bounds of the component.
-     * Force re-renders until the bounds are properly calculated.
-     */
-    useEffect(() => {
-      // Calculate the bounds of the component's image
-      const newBounds = {
-        x: boundingRef.current?.offsetWidth,
-        y: boundingRef.current?.offsetHeight
-      }
-
-      // Update the bounds or force re-render
-      if (newBounds.x && newBounds.y) setBounds(newBounds)
-      else setRenderCount(renderCount + 1)
-    }, [boundingRef, renderCount])
-
     return (
       <Draggable
         handle='.component-handle'
@@ -83,11 +67,9 @@ export const ElectricalCore = forwardRef(
         {...rest}
       >
         <div className={styles.wrapper} ref={draggableRef}>
-          <div ref={ref}>
-            <img
-              className={cx(styles.noDrag, 'component-handle')}
-              style={{
-                transform: `rotate(${position?.angle ?? 0}deg)`,
+          <img
+            style={{
+              transform: `rotate(${position?.angle ?? 0}deg)`,
               width: width,
               height: height,
 
@@ -96,12 +78,12 @@ export const ElectricalCore = forwardRef(
               WebkitFilter:
                 isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`
             }}
+            className={cx(styles.noDrag, 'component-handle')}
             onClick={onClick}
-              ref={boundingRef}
-              src={src}
-              alt={type}
-            />
-          </div>
+            ref={ref}
+            src={src}
+            alt={type}
+          />
 
           {ports.map((port) => {
             return (
