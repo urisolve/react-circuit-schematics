@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { ElectricalCore } from '../../components/ElectricalCore'
-import { Schematic } from '../../components/Schematic'
+import { ElectricalCore } from '../components/ElectricalCore'
+import { Schematic } from '../components/Schematic'
 import ANDGate from './and-gate.png'
 
 export default {

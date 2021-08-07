@@ -1,8 +1,8 @@
 import React, { useRef } from 'react'
 
-import { Schematic } from '../../components/Schematic'
-import { Connection } from '../../components/Connection'
-import { Node } from '../../components/Node'
+import { Schematic } from '../components/Schematic'
+import { Connection } from '../components/Connection'
+import { Node } from '../components/Node'
 
 export default {
   title: 'Low Level API/Connection',

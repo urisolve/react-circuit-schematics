@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import React from 'react'
 
-import { Schematic } from '../../components/Schematic'
-import { useSchematic } from '../../hooks/useSchematic'
+import { Schematic } from '../components/Schematic'
+import { useSchematic } from '../hooks/useSchematic'
 import { RLC_Circuit } from './RLC_Circuit'
 
 export default {
@@ -89,11 +89,11 @@ export const JSON_FormatExample = () => {
   }
 
   const { schematic } = useSchematic(circuit)
-  return <Schematic width={800} height={500} schematic={schematic} />
+  return <Schematic schematic={schematic} width={800} height={500} />
 }
 
 export const UndoAndRedo = () => {
-  const { schematic, history, selection } = useSchematic(RLC_Circuit)
+  const { schematic, history } = useSchematic(RLC_Circuit)
 
   return (
     <>
@@ -104,17 +104,12 @@ export const UndoAndRedo = () => {
         Redo
       </button>
 
-      <Schematic
-        width={800}
-        height={500}
-        schematic={schematic}
-        selection={selection}
-      />
+      <Schematic schematic={schematic} width={800} height={500} />
     </>
   )
 }
 
 export const ReadOnly = () => {
   const { schematic } = useSchematic(RLC_Circuit)
-  return <Schematic width={800} height={500} schematic={schematic} readOnly />
+  return <Schematic schematic={schematic} width={800} height={500} readOnly />
 }

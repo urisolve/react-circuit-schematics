@@ -1,5 +1,5 @@
 import React from 'react'
-import { Node } from '../../components/Node'
+import { Node } from '../components/Node'
 
 export default {
   title: 'Low Level API/Node',

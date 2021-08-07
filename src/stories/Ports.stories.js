@@ -1,5 +1,5 @@
 import React from 'react'
-import { Port } from '../../components/Port'
+import { Port } from '../components/Port'
 
 export default {
   title: 'Low Level API/Port',
