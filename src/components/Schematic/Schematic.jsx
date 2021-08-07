@@ -2,11 +2,11 @@ import React, { useCallback, useRef } from 'react'
 import useDynamicRefs from 'use-dynamic-refs'
 import PropTypes from 'prop-types'
 
+import { SelectionArea } from '../SelectionArea'
 import { ElectricalCore } from '../ElectricalCore'
 import { Connection } from '../Connection'
 import { Node } from '../Node'
 
-import { useSelection } from '../../hooks/useSelection'
 import { snapToGrid } from '../../util'
 
 export const Schematic = ({
@@ -20,9 +20,7 @@ export const Schematic = ({
   ...rest
 }) => {
   const [getRef, setRef] = useDynamicRefs()
-
-  const ref = useRef()
-  const SelectionArea = useSelection(getRef, schematic.items, ref)
+  const canvasRef = useRef()
 
   /**
    * Update the coordinates of a Component.
@@ -73,7 +71,7 @@ export const Schematic = ({
   return (
     <div
       className='schematic'
-      ref={ref}
+      ref={canvasRef}
       style={{
         width,
         height,
@@ -81,7 +79,6 @@ export const Schematic = ({
         zIndex: 0,
 
         // Grid
-        padding: gridSize,
         backgroundImage: `radial-gradient(
           circle,
           ${gridColor} 1px,
@@ -91,8 +88,12 @@ export const Schematic = ({
       }}
       {...rest}
     >
-      <SelectionArea />
       {children}
+      <SelectionArea
+        getRef={getRef}
+        selectableItems={schematic.items}
+        parentRef={canvasRef}
+      />
 
       {schematic?.data?.components?.map((comp) => {
         comp.ports.forEach((port) => (port.ref = setRef(port.id)))
