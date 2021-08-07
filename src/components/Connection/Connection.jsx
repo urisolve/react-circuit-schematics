@@ -28,7 +28,7 @@ export const Connection = forwardRef(
           end={end}
           path={type}
           showHead={false}
-          gridBreak={`${gridBreak}`}
+          gridBreak={gridBreak + '%'}
           divContainerStyle={{ zIndex: -1, opacity: properties.opacity ?? 1 }}
           passProps={{ onClick }}
           {...rest}
@@ -98,7 +98,7 @@ Connection.propTypes = {
    */
   gridSize: PropTypes.number,
   /**
-   * The part of the connection that there should be a 90deg angle
+   * Where the connection should have a 90deg turn, in percentage
    */
   gridBreak: PropTypes.number,
   /**
@@ -115,5 +115,5 @@ Connection.defaultProps = {
     decoration: {},
     opacity: 1
   },
-  gridBreak: 0
+  gridBreak: 100
 }
