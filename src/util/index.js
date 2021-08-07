@@ -1,2 +1,2 @@
 export * from './snapToGrid'
-export * from './boxesIntersect'
+export * from './areasIntersect'
