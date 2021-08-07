@@ -21,6 +21,10 @@ export const SelectionArea = forwardRef(
     {
       getRef,
       selectableItems = [],
+      selectingItems,
+      setSelectingItems,
+      selectedItems,
+      setSelectedItems,
       parentRef = window,
       fps = 30,
       style,
@@ -32,10 +36,6 @@ export const SelectionArea = forwardRef(
     const parentRect = useRef(null)
     const startPoint = useRef(null)
     const selectionArea = useRef(defaultArea)
-
-    const [isDragging, setIsDragging] = useState(false)
-    const [selectingItems, setSelectingItems] = useState(new Set())
-    const [selectedItems, setSelectedItems] = useState(new Set())
 
     /**
      * Calculate the areas of the elements
