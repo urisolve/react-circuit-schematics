@@ -43,13 +43,12 @@ export const SelectionArea = forwardRef(
      */
     useEffect(() => {
       // Calculate the bounding area of the parent element
-      const { left, top, width, height } =
-        parentRef.current.getBoundingClientRect()
+      const rect = parentRef.current.getBoundingClientRect()
       parentRect.current = {
-        left: left + window.scrollX,
-        top: top + window.scrollY,
-        width,
-        height
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height
       }
 
       // Calculate the bounding areas of the items
@@ -57,32 +56,13 @@ export const SelectionArea = forwardRef(
         const rect = getRef(elem.id).current.getBoundingClientRect()
         selectableAreas.current.push({
           id: elem.id,
-          left: rect.left + window.scrollX - parentRect.current.left,
-          top: rect.top + window.scrollY - parentRect.current.top,
+          left: rect.left - parentRect.current.left,
+          top: rect.top - parentRect.current.top,
           width: rect.width,
           height: rect.height
         })
       }
     }, [getRef])
-
-    /**
-     * Apply the appropriate class to the items.
-     */
-    useEffect(() => {
-      // Items being selected
-      for (const id of selectingItems) {
-        const elem = getRef(id).current
-        elem.classList.add('selecting')
-        elem.classList.remove('selected')
-      }
-
-      // Items already selected
-      for (const id of selectedItems) {
-        const elem = getRef(id).current
-        elem.classList.add('selected')
-        elem.classList.remove('selecting')
-      }
-    }, [selectingItems, selectedItems, getRef])
 
     /**
      * Handler for pressing left mouse button.
