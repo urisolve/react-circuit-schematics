@@ -76,12 +76,28 @@ export const SelectionArea = forwardRef(
         if (event.which !== MOUSE.LEFT) return
 
         // Calculate click point
-        startPoint.current = {
+        const clickPoint = {
           left: event.pageX - parentRect.current.left,
           top: event.pageY - parentRect.current.top
         }
 
-        // Reset the selection area
+        // Single click on selectable items
+        for (const area of selectableAreas.current) {
+          if (areasIntersect(clickPoint, area)) {
+            if (event.ctrlKey)
+              setSelectedItems((items) => {
+                items.add(area.id)
+                return items
+              })
+            else setSelectedItems(new Set([area.id]))
+
+            event.preventDefault()
+            return
+          }
+        }
+
+        // Set the beginning of the selection area
+        startPoint.current = clickPoint
         selectionArea.current = {
           ...startPoint.current,
           width: 0,
