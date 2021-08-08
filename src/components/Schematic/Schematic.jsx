@@ -29,9 +29,6 @@ export const Schematic = ({
   /**
    * Update the coordinates of a Component.
    *
-   * Uses the callback version of the `schematic.editById()` because it must
-   * not override the rotation of the element.
-   *
    * @param {String} id The id of the element that is dragged.
    * @param {Object} position The new coordinates of the element.
    */
@@ -51,9 +48,6 @@ export const Schematic = ({
 
   /**
    * Update the coordinates of a Label.
-   *
-   * Uses the callback version of the `schematic.editById()` because it must
-   * not override the rotation of the element.
    *
    * @param {String} id The id of the parent element of the Label.
    * @param {Object} position The new coordinates of the Label.
