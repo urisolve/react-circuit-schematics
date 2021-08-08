@@ -9,7 +9,7 @@ export const RLC_Circuit = {
         name: 'U',
         value: '5',
         unit: 'V',
-        position: { x: 90, y: 40 }
+        position: { x: 120, y: 220 }
       },
       ports: [
         {
@@ -32,7 +32,7 @@ export const RLC_Circuit = {
         name: 'R',
         value: '10k',
         unit: 'Ω',
-        position: { x: 10, y: 0 }
+        position: { x: 210, y: 110 }
       },
       ports: [
         {
@@ -55,7 +55,7 @@ export const RLC_Circuit = {
         name: 'L',
         value: '10m',
         unit: 'H',
-        position: { x: 10, y: 0 }
+        position: { x: 410, y: 110 }
       },
       ports: [
         {
@@ -78,7 +78,7 @@ export const RLC_Circuit = {
         name: 'C',
         value: '1µ',
         unit: 'F',
-        position: { x: 80, y: 40 }
+        position: { x: 580, y: 220 }
       },
       ports: [
         {

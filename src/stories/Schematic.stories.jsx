@@ -34,7 +34,7 @@ export const JSON_FormatExample = () => {
           name: 'U',
           value: '5',
           unit: 'V',
-          position: { x: -50, y: 40 }
+          position: { x: 270, y: 220 }
         },
         ports: [
           {
@@ -57,7 +57,7 @@ export const JSON_FormatExample = () => {
           name: 'R',
           value: '10k',
           unit: 'Ω',
-          position: { x: 80, y: 30 }
+          position: { x: 480, y: 240 }
         },
         ports: [
           {
