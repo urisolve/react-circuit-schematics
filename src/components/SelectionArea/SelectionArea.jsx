@@ -16,6 +16,8 @@ const defaultArea = {
   height: 0
 }
 
+const MOUSE = Object.freeze({ NONE: 0, LEFT: 1, MIDDLE: 2, RIGHT: 3 })
+
 export const SelectionArea = forwardRef(
   (
     {
@@ -71,12 +73,7 @@ export const SelectionArea = forwardRef(
     const onMouseDown = useCallback(
       (event) => {
         if (disabled) return
-
-        // Only allow left clicks
-        if (event.which !== 1) return
-
-        // Start dragging
-        setIsDragging(true)
+        if (event.which !== MOUSE.LEFT) return
 
         // Calculate click point
         startPoint.current = {
@@ -91,7 +88,7 @@ export const SelectionArea = forwardRef(
           height: 0
         }
 
-        // Reset set of selected items
+        // Unselect the selected items
         setSelectedItems(new Set())
 
         // Enable event listeners for drag
@@ -108,6 +105,9 @@ export const SelectionArea = forwardRef(
      */
     const onMouseMove = useCallback(
       throttle((event) => {
+        // Start dragging
+        setIsDragging(true)
+
         // Calculate the current position of mouse
         const endPoint = {
           left: event.pageX - parentRect.current.left,
