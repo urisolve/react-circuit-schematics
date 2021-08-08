@@ -25,3 +25,12 @@ export const isConnection = (element) =>
  */
 export const isNode = (element) =>
   !isComponent(element) && !isConnection(element)
+
+/**
+ * Check if the given element has a Label.
+ *
+ * @param {Object} element A schematic element.
+ * @returns Wether or not the element has a Label.
+ */
+export const hasLabel = (element) =>
+  Object.prototype.hasOwnProperty.call(element, 'label')

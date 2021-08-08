@@ -1,9 +1,9 @@
 import { useState, useCallback, useMemo } from 'react'
-import { cloneDeep, isEqual, isFunction } from 'lodash'
+import { cloneDeep, compact, isEqual, isFunction } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
 import { useHistory } from '../useHistory'
-import { isComponent, isConnection } from '../../util'
+import { hasLabel, isComponent, isConnection } from '../../util'
 
 /**
  * A React Hook that takes care of the logic required to run a schematic.
@@ -21,13 +21,7 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
   })
 
   /**
-   * Save previous schematic history
-   */
-  const history = useHistory(setSchematic, maxHistoryLength)
-
-  /**
-   * Place all elements into a single array.
-   * It's useful for iterating through all of schematic's elements.
+   * Array of all the schematic's items.
    */
   const items = useMemo(
     () => [
@@ -37,6 +31,26 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
     ],
     [schematic]
   )
+
+  /**
+   * Array of all the schematic's labels.
+   */
+  const labels = useMemo(
+    () =>
+      compact(
+        items.map((item) =>
+          hasLabel(item)
+            ? { ...item.label, id: uuidv4(), owner: item.id }
+            : null
+        )
+      ),
+    [schematic]
+  )
+
+  /**
+   * Save previous schematic history
+   */
+  const history = useHistory(setSchematic, maxHistoryLength)
 
   /**
    * Adds an element to the schematic.
@@ -147,6 +161,7 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
     schematic: {
       data: schematic,
       items,
+      labels,
       add,
       deleteById,
       editById
