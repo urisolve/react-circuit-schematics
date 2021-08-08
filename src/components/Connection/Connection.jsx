@@ -2,8 +2,6 @@ import React, { forwardRef } from 'react'
 import XArrow from 'react-xarrows'
 import PropTypes from 'prop-types'
 
-import { Label } from '../Label'
-
 export const Connection = forwardRef(
   (
     {
@@ -34,14 +32,6 @@ export const Connection = forwardRef(
           passProps={{ onClick }}
           {...rest}
         />
-        {label && (
-          <Label
-            gridSize={gridSize}
-            onDragStop={(e, position) => onDragStop(id, position, true)}
-            {...rest}
-            {...label}
-          />
-        )}
       </div>
     )
   }
@@ -66,18 +56,6 @@ Connection.propTypes = {
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.elementType })
   ]).isRequired,
-  /**
-   * The label of the connection
-   */
-  label: PropTypes.shape({
-    name: PropTypes.string,
-    value: PropTypes.number,
-    unit: PropTypes.string,
-    position: PropTypes.shape({
-      x: PropTypes.number,
-      y: PropTypes.number
-    })
-  }),
   /**
    * The type of path the connection takes
    */

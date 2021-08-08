@@ -6,10 +6,8 @@ import { PropTypes } from 'prop-types'
 import cx from 'classnames'
 import styles from './Node.module.css'
 
-import { Label } from '../Label'
-
 export const Node = forwardRef(
-  ({ id, position, label, properties, gridSize, onDragStop, ...rest }, ref) => {
+  ({ id, position, properties, gridSize, onDragStop, ...rest }, ref) => {
     const draggableRef = useRef()
     const updateXarrow = useXarrow()
 
@@ -24,28 +22,17 @@ export const Node = forwardRef(
         onStop={(e, position) => onDragStop(id, position)}
         {...rest}
       >
-        <div ref={draggableRef}>
-          <div
-            className={cx(styles.node, 'node-handle')}
-            style={{
-              width: (properties.radius ?? 6) * 2,
-              height: (properties.radius ?? 6) * 2,
-              backgroundColor: properties.color ?? '#6495ED',
-              opacity: properties.opacity ?? 1
-            }}
-          >
-            <div ref={ref} />
-          </div>
-
-          {label && (
-            <Label
-              gridSize={gridSize}
-              onDragStop={(e, position) => onDragStop(id, position, true)}
-              // disabled={disabled}
-              {...rest}
-              {...label}
-            />
-          )}
+        <div
+          className={cx(styles.node, 'node-handle')}
+          ref={draggableRef}
+          style={{
+            width: (properties.radius ?? 6) * 2,
+            height: (properties.radius ?? 6) * 2,
+            backgroundColor: properties.color ?? '#6495ED',
+            opacity: properties.opacity ?? 1
+          }}
+        >
+          <div ref={ref} />
         </div>
       </Draggable>
     )
@@ -64,18 +51,6 @@ Node.propTypes = {
     x: PropTypes.number,
     y: PropTypes.number
   }).isRequired,
-  /**
-   * The label of the node
-   */
-  label: PropTypes.shape({
-    name: PropTypes.string,
-    value: PropTypes.number,
-    unit: PropTypes.string,
-    position: PropTypes.shape({
-      x: PropTypes.number,
-      y: PropTypes.number
-    })
-  }),
   /**
    * The optional properties fo the node
    */

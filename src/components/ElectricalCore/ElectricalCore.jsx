@@ -9,7 +9,6 @@ import cx from 'classnames'
 
 import { svgMap } from '../../../assets'
 import { Port } from '../Port'
-import { Label } from '../Label'
 
 export const ElectricalCore = forwardRef(
   (
@@ -17,7 +16,6 @@ export const ElectricalCore = forwardRef(
       id,
       type,
       position,
-      label,
       ports,
       width,
       height,
@@ -97,15 +95,6 @@ export const ElectricalCore = forwardRef(
               />
             )
           })}
-
-          {label && (
-            <Label
-              gridSize={gridSize}
-              onDragStop={(e, position) => onDragStop(id, position, true)}
-              {...rest}
-              {...label}
-            />
-          )}
         </div>
       </Draggable>
     )
@@ -129,18 +118,6 @@ ElectricalCore.propTypes = {
     y: PropTypes.number,
     z: PropTypes.number,
     angle: PropTypes.number
-  }),
-  /**
-   * The label of the component
-   */
-  label: PropTypes.shape({
-    name: PropTypes.string,
-    value: PropTypes.string,
-    unit: PropTypes.string,
-    position: PropTypes.shape({
-      x: PropTypes.number,
-      y: PropTypes.number
-    })
   }),
   /**
    * An array of the connection ports
