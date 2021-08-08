@@ -42,8 +42,23 @@ export const Schematic = ({
 
       // Apply the new position
       schematic.editById(id, (elem) => {
-        if (!isLabel) elem.position = { ...elem.position, x, y }
-        else elem.label.position = { ...elem.label.position, x, y }
+        const labelDistance = {
+          x: elem.label.position.x - elem.position.x,
+          y: elem.label.position.y - elem.position.y
+        }
+
+        // Update element's position
+        elem.position = isLabel ? elem.position : { ...elem.position, x, y }
+
+        // Update label's position
+        elem.label.position = isLabel
+          ? { ...elem.label.position, x, y }
+          : {
+              ...elem.label.position,
+              x: x + labelDistance.x,
+              y: y + labelDistance.y
+            }
+
         return elem
       })
     },
