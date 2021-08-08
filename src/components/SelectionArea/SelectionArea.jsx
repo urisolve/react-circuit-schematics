@@ -199,7 +199,7 @@ export const SelectionArea = forwardRef(
 
           // Editable
           backgroundColor: 'rgba(100, 149, 237, 0.25)',
-          border: '2px solid rgba(100, 149, 237, 0.75)',
+          boxShadow: '0px 0px 0px 2px rgba(100, 149, 237, 0.75) inset',
           zIndex: 99,
           ...style
         }}
