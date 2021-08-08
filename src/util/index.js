@@ -1,3 +1,3 @@
 export * from './snapToGrid'
-export * from './areasIntersect'
+export * from './areas'
 export * from './checkSchematicTypes'
