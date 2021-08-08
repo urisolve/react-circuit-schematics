@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 import Draggable from 'react-draggable'
 import cx from 'classnames'
@@ -6,27 +6,24 @@ import cx from 'classnames'
 import styles from './Label.module.css'
 import { DefaultLabel } from './DefaultLabel'
 
-export const Label = ({ as, position, gridSize, onDragStop, ...rest }) => {
-  const draggableRef = useRef()
-
-  return (
-    <Draggable
-      bounds='.schematic'
-      position={position}
-      nodeRef={draggableRef}
-      grid={[gridSize, gridSize]}
-      onStop={onDragStop}
-      {...rest}
-    >
-      <div
-        className={cx(styles.wrapper, styles.unselectable)}
-        ref={draggableRef}
+export const Label = forwardRef(
+  ({ as, id, owner, position, gridSize, onDragStop, ...rest }, ref) => {
+    return (
+      <Draggable
+        bounds='.schematic'
+        position={position}
+        nodeRef={ref}
+        grid={[gridSize, gridSize]}
+        onStop={(e, position) => onDragStop(owner, position, true)}
+        {...rest}
       >
-        {as ? React.createElement(as, rest) : <DefaultLabel {...rest} />}
-      </div>
-    </Draggable>
-  )
-}
+        <div className={cx(styles.wrapper, styles.unselectable)} ref={ref}>
+          {as ? React.createElement(as, rest) : <DefaultLabel {...rest} />}
+        </div>
+      </Draggable>
+    )
+  }
+)
 
 Label.propTypes = {
   /**
@@ -35,15 +32,23 @@ Label.propTypes = {
    */
   as: PropTypes.func,
   /**
+   * The id of the label.
+   */
+  id: PropTypes.string,
+  /**
+   * The id of this label's owner.
+   */
+  owner: PropTypes.string,
+  /**
    * The name of the component.
    */
   name: PropTypes.string,
   /**
-   * The value of the component
+   * The value of the component.
    */
   value: PropTypes.string,
   /**
-   * The unit of the component
+   * The unit of the component.
    */
   unit: PropTypes.string,
   /**
@@ -57,14 +62,14 @@ Label.propTypes = {
    */
   onValueChange: PropTypes.func,
   /**
-   * The default position of the label relative to the component
+   * The default position of the label relative to the component.
    */
   position: PropTypes.shape({
     x: PropTypes.number,
     y: PropTypes.number
   }),
   /**
-   * The size of the grid, i.e., the amount of pixels the drag skips
+   * The size of the grid, i.e., the amount of pixels the drag skips.
    */
   gridSize: PropTypes.number
 }

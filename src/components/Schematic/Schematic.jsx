@@ -7,6 +7,7 @@ import { SelectionArea } from '../SelectionArea'
 import { ElectricalCore } from '../ElectricalCore'
 import { Connection } from '../Connection'
 import { Node } from '../Node'
+import { Label } from '../Label'
 
 import { snapToGrid } from '../../util'
 
@@ -127,6 +128,15 @@ export const Schematic = ({
               />
             )
         )}
+
+        {schematic?.labels?.map((label) => (
+          <Label
+            key={label.id}
+            ref={setRef(label.id)}
+            onDragStop={handleDragStop}
+            {...label}
+          />
+        ))}
       </Xwrapper>
     </div>
   )
