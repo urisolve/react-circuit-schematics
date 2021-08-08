@@ -16,12 +16,13 @@ export const SelectionArea = forwardRef(
   (
     {
       getRef,
+      parentRef = window,
+      ignoreItems = [],
       selectableItems = [],
       selectingItems,
       setSelectingItems,
       selectedItems,
       setSelectedItems,
-      parentRef = window,
       fps = 30,
       style,
       disabled,
@@ -31,6 +32,7 @@ export const SelectionArea = forwardRef(
   ) => {
     const [isDragging, setIsDragging] = useState(false)
     const selectionArea = useRef({ left: 0, top: 0, width: 0, height: 0 })
+    const ignoreAreas = useRef([])
     const selectableAreas = useRef([])
     const parentRect = useRef(null)
     const startPoint = useRef(null)
@@ -48,15 +50,27 @@ export const SelectionArea = forwardRef(
         height: rect.height
       }
 
+      // Calculate the bounding areas of the items marked to ignore
+      for (const elem of ignoreItems) {
+        const elemArea = getRef(elem.id).current.getBoundingClientRect()
+        ignoreAreas.current.push({
+          id: elem.id,
+          left: elemArea.left - parentRect.current.left,
+          top: elemArea.top - parentRect.current.top,
+          width: elemArea.width,
+          height: elemArea.height
+        })
+      }
+
       // Calculate the bounding areas of the items
       for (const elem of selectableItems) {
-        const rect = getRef(elem.id).current.getBoundingClientRect()
-        selectableAreas.current.push({
+        const elemArea = getRef(elem.id).current.getBoundingClientRect()
+        ignoreAreas.current.push({
           id: elem.id,
-          left: rect.left - parentRect.current.left,
-          top: rect.top - parentRect.current.top,
-          width: rect.width,
-          height: rect.height
+          left: elemArea.left - parentRect.current.left,
+          top: elemArea.top - parentRect.current.top,
+          width: elemArea.width,
+          height: elemArea.height
         })
       }
     }, [getRef])
@@ -73,6 +87,14 @@ export const SelectionArea = forwardRef(
         const clickPoint = {
           left: event.pageX - parentRect.current.left,
           top: event.pageY - parentRect.current.top
+        }
+
+        // Ignore click if it was on an item marked to ignore
+        for (const area of ignoreAreas.current) {
+          if (areasIntersect(clickPoint, area)) {
+            event.preventDefault()
+            return
+          }
         }
 
         // Single click on selectable items

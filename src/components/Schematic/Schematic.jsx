@@ -75,8 +75,9 @@ export const Schematic = ({
 
         <SelectionArea
           getRef={getRef}
-          selectableItems={schematic.items}
           parentRef={canvasRef}
+          ignoreItems={schematic.labels}
+          selectableItems={schematic.items}
           selectingItems={selectingItems}
           setSelectingItems={setSelectingItems}
           selectedItems={selectedItems}
