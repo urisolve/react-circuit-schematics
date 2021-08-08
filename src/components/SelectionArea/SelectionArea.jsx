@@ -65,7 +65,7 @@ export const SelectionArea = forwardRef(
       // Calculate the bounding areas of the items
       for (const elem of selectableItems) {
         const elemArea = getRef(elem.id).current.getBoundingClientRect()
-        ignoreAreas.current.push({
+        selectableAreas.current.push({
           id: elem.id,
           left: elemArea.left - parentRect.current.left,
           top: elemArea.top - parentRect.current.top,
@@ -73,7 +73,7 @@ export const SelectionArea = forwardRef(
           height: elemArea.height
         })
       }
-    }, [getRef])
+    }, [getRef, ignoreItems, selectableItems])
 
     /**
      * Handler for pressing left mouse button.
