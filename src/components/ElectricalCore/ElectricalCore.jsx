@@ -26,7 +26,6 @@ export const ElectricalCore = forwardRef(
       imgPath,
       handlePortClick,
       onDragStop,
-      onLabelDragStop,
       onClick,
       isSelected,
       ...rest
@@ -102,7 +101,7 @@ export const ElectricalCore = forwardRef(
           {label && (
             <Label
               gridSize={gridSize}
-              onDragStop={(e, position) => onLabelDragStop(id, position)}
+              onDragStop={(e, position) => onDragStop(id, position, true)}
               {...rest}
               {...label}
             />

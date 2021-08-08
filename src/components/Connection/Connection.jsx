@@ -16,7 +16,7 @@ export const Connection = forwardRef(
       gridSize,
       gridBreak,
       onClick,
-      onLabelDragStop,
+      onDragStop,
       ...rest
     },
     ref
@@ -37,7 +37,7 @@ export const Connection = forwardRef(
         {label && (
           <Label
             gridSize={gridSize}
-            onDragStop={(e, position) => onLabelDragStop(id, position)}
+            onDragStop={(e, position) => onDragStop(id, position, true)}
             {...rest}
             {...label}
           />

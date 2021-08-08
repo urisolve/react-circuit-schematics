@@ -9,19 +9,7 @@ import styles from './Node.module.css'
 import { Label } from '../Label'
 
 export const Node = forwardRef(
-  (
-    {
-      id,
-      position,
-      label,
-      properties,
-      gridSize,
-      onDragStop,
-      onLabelDragStop,
-      ...rest
-    },
-    ref
-  ) => {
+  ({ id, position, label, properties, gridSize, onDragStop, ...rest }, ref) => {
     const draggableRef = useRef()
     const updateXarrow = useXarrow()
 
@@ -52,7 +40,7 @@ export const Node = forwardRef(
           {label && (
             <Label
               gridSize={gridSize}
-              onDragStop={(e, position) => onLabelDragStop(id, position)}
+              onDragStop={(e, position) => onDragStop(id, position, true)}
               // disabled={disabled}
               {...rest}
               {...label}
