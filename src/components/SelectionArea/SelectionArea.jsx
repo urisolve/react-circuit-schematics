@@ -9,13 +9,7 @@ import { throttle } from 'lodash'
 
 import { areasIntersect } from '../../util'
 
-const defaultArea = {
-  left: 0,
-  top: 0,
-  width: 0,
-  height: 0
-}
-
+// An ENUM of the different types of mouse-clicks
 const MOUSE = Object.freeze({ NONE: 0, LEFT: 1, MIDDLE: 2, RIGHT: 3 })
 
 export const SelectionArea = forwardRef(
@@ -36,10 +30,10 @@ export const SelectionArea = forwardRef(
     ref
   ) => {
     const [isDragging, setIsDragging] = useState(false)
+    const selectionArea = useRef({ left: 0, top: 0, width: 0, height: 0 })
     const selectableAreas = useRef([])
     const parentRect = useRef(null)
     const startPoint = useRef(null)
-    const selectionArea = useRef(defaultArea)
 
     /**
      * Calculate the areas of the elements
