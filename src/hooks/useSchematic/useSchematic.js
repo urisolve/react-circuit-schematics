@@ -133,7 +133,7 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
    * @param {Boolean} If If it should save the changes to the history.
    */
   const editById = useCallback(
-    (id, edits, save = true) => {
+    (id, edits, saveChanges = true) => {
       setSchematic((oldSchematic) => {
         // Make a clone of the current schematic
         const newSchematic = cloneDeep(oldSchematic)
@@ -147,7 +147,7 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
         }
 
         // If the changes are valid, save the old schematic
-        if (save && !isEqual(oldSchematic, newSchematic))
+        if (saveChanges && !isEqual(oldSchematic, newSchematic))
           history.save(oldSchematic)
 
         return newSchematic

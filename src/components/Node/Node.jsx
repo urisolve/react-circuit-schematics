@@ -18,10 +18,7 @@ export const Node = forwardRef(
         position={position}
         nodeRef={draggableRef}
         grid={[gridSize, gridSize]}
-        onDrag={(e, position) => {
-          updatePosition(id, position, false, false)
-          updateXarrow()
-        }}
+        onDrag={(e, position) => updateXarrow()}
         onStop={(e, position) => updatePosition(id, position)}
         {...rest}
       >

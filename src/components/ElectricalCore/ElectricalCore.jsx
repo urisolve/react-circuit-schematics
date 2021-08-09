@@ -59,10 +59,7 @@ export const ElectricalCore = forwardRef(
         position={position}
         positionOffset={{ x: 5, y: 5 }}
         grid={[gridSize, gridSize]}
-        onDrag={(e, position) => {
-          updatePosition(id, position, false, false)
-          updateXarrow()
-        }}
+        onDrag={(e, position) => updateXarrow()}
         onStop={(e, position) => updatePosition(id, position)}
         {...rest}
       >
