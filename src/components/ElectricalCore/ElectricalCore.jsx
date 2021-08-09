@@ -23,7 +23,7 @@ export const ElectricalCore = forwardRef(
       altImageIdx,
       imgPath,
       handlePortClick,
-      onDragStop,
+      updatePosition,
       onClick,
       isSelected,
       ...rest
@@ -59,8 +59,11 @@ export const ElectricalCore = forwardRef(
         position={position}
         positionOffset={{ x: 5, y: 5 }}
         grid={[gridSize, gridSize]}
-        onDrag={updateXarrow}
-        onStop={(e, position) => onDragStop(id, position)}
+        onDrag={(e, position) => {
+          updatePosition(id, position, false, false)
+          updateXarrow()
+        }}
+        onStop={(e, position) => updatePosition(id, position)}
         {...rest}
       >
         <div className={styles.wrapper} ref={draggableRef}>

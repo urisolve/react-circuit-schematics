@@ -14,7 +14,7 @@ export const Connection = forwardRef(
       gridSize,
       gridBreak,
       onClick,
-      onDragStop,
+      updatePosition,
       ...rest
     },
     ref

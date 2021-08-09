@@ -34,33 +34,37 @@ export const Schematic = ({
    * @param {Object} position The new coordinates of the element.
    * @param {Boolean} isLabel If you want to update the label's coordinates
    */
-  const handleDragStop = useCallback(
-    (id, { x, y }, isLabel = false) => {
+  const updatePosition = useCallback(
+    (id, { x, y }, isLabel = false, save = true) => {
       // Snap the values to the grid
       x = snapToGrid(x, gridSize)
       y = snapToGrid(y, gridSize)
 
       // Apply the new position
-      schematic.editById(id, (elem) => {
-        const labelDistance = {
-          x: elem.label.position.x - elem.position.x,
-          y: elem.label.position.y - elem.position.y
-        }
+      schematic.editById(
+        id,
+        (elem) => {
+          const labelDistance = {
+            x: elem.label.position.x - elem.position.x,
+            y: elem.label.position.y - elem.position.y
+          }
 
-        // Update element's position
-        elem.position = isLabel ? elem.position : { ...elem.position, x, y }
+          // Update element's position
+          elem.position = isLabel ? elem.position : { ...elem.position, x, y }
 
-        // Update label's position
-        elem.label.position = isLabel
-          ? { ...elem.label.position, x, y }
-          : {
-              ...elem.label.position,
-              x: x + labelDistance.x,
-              y: y + labelDistance.y
-            }
+          // Update label's position
+          elem.label.position = isLabel
+            ? { ...elem.label.position, x, y }
+            : {
+                ...elem.label.position,
+                x: x + labelDistance.x,
+                y: y + labelDistance.y
+              }
 
-        return elem
-      })
+          return elem
+        },
+        save
+      )
     },
     [schematic?.editById, gridSize]
   )
@@ -108,7 +112,7 @@ export const Schematic = ({
               key={comp.id}
               ref={setRef(comp.id)}
               gridSize={gridSize}
-              onDragStop={handleDragStop}
+              updatePosition={updatePosition}
               isSelected={selectedItems.has(comp.id)}
               disabled={readOnly}
             />
@@ -121,7 +125,7 @@ export const Schematic = ({
             key={node.id}
             ref={setRef(node.id)}
             gridSize={gridSize}
-            onDragStop={handleDragStop}
+            updatePosition={updatePosition}
             isSelected={selectedItems.has(node.id)}
             disabled={readOnly}
           />
@@ -138,7 +142,7 @@ export const Schematic = ({
                 start={getRef(conn.start)}
                 end={getRef(conn.end)}
                 gridSize={gridSize}
-                onDragStop={handleDragStop}
+                updatePosition={updatePosition}
                 isSelected={selectedItems.has(conn.id)}
                 disabled={readOnly}
               />
@@ -149,7 +153,7 @@ export const Schematic = ({
           <Label
             key={label.id}
             ref={setRef(label.id)}
-            onDragStop={handleDragStop}
+            updatePosition={updatePosition}
             {...label}
           />
         ))}

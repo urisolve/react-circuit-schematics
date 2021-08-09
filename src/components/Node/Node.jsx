@@ -7,7 +7,7 @@ import cx from 'classnames'
 import styles from './Node.module.css'
 
 export const Node = forwardRef(
-  ({ id, position, properties, gridSize, onDragStop, ...rest }, ref) => {
+  ({ id, position, properties, gridSize, updatePosition, ...rest }, ref) => {
     const draggableRef = useRef()
     const updateXarrow = useXarrow()
 
@@ -18,8 +18,11 @@ export const Node = forwardRef(
         position={position}
         nodeRef={draggableRef}
         grid={[gridSize, gridSize]}
-        onDrag={updateXarrow}
-        onStop={(e, position) => onDragStop(id, position)}
+        onDrag={(e, position) => {
+          updatePosition(id, position, false, false)
+          updateXarrow()
+        }}
+        onStop={(e, position) => updatePosition(id, position)}
         {...rest}
       >
         <div
