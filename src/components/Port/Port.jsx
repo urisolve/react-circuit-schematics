@@ -48,7 +48,7 @@ export const Port = forwardRef(
         }}
         {...rest}
       >
-        <div ref={ref} />
+        <div ref={ref} className={styles.connectionPoint} />
       </div>
     )
   }

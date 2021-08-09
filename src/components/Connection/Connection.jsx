@@ -27,6 +27,8 @@ export const Connection = forwardRef(
         path={type}
         showHead={false}
         gridBreak={gridBreak}
+        startAnchor='middle'
+        endAnchor='middle'
         divContainerStyle={{
           zIndex: -1,
           opacity: properties.opacity ?? 1

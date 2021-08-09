@@ -34,7 +34,7 @@ export const Node = forwardRef(
               : properties.color ?? '#6495ED'
           }}
         >
-          <div ref={ref} />
+          <div ref={ref} className={styles.connectionPoint} />
         </div>
       </Draggable>
     )
