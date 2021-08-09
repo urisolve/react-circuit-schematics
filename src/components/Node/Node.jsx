@@ -29,7 +29,7 @@ export const Node = forwardRef(
             opacity: properties.opacity ?? 1
           }}
         >
-          <div ref={ref} style={{ width: '100%', height: '100%' }} />
+          <div ref={ref} />
         </div>
       </Draggable>
     )
