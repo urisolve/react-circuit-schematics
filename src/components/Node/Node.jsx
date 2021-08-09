@@ -6,7 +6,10 @@ import cx from 'classnames'
 import styles from './Node.module.css'
 
 export const Node = forwardRef(
-  ({ id, position, properties, gridSize, updatePosition, ...rest }, ref) => {
+  (
+    { id, position, properties, gridSize, updatePosition, isSelected, ...rest },
+    ref
+  ) => {
     const draggableRef = useRef()
 
     return (
@@ -25,8 +28,10 @@ export const Node = forwardRef(
           style={{
             width: (properties.radius ?? 6) * 2,
             height: (properties.radius ?? 6) * 2,
-            backgroundColor: properties.color ?? '#6495ED',
-            opacity: properties.opacity ?? 1
+            opacity: properties.opacity ?? 1,
+            backgroundColor: isSelected
+              ? '#3475FF'
+              : properties.color ?? '#6495ED'
           }}
         >
           <div ref={ref} />
