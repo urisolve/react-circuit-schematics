@@ -26,9 +26,8 @@ export const Connection = forwardRef(
           end={end}
           path={type}
           showHead={false}
-          gridBreak={gridBreak + '%'}
-          zIndex={-1}
-          divContainerStyle={{ opacity: properties.opacity ?? 1 }}
+          gridBreak={gridBreak}
+          divContainerStyle={{ zIndex: -1, opacity: properties.opacity ?? 1 }}
           passProps={{ onClick }}
           {...rest}
         />
@@ -94,5 +93,5 @@ Connection.defaultProps = {
     decoration: {},
     opacity: 1
   },
-  gridBreak: 100
+  gridBreak: 1
 }

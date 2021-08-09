@@ -1,6 +1,11 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useRef,
+  useState,
+  useEffect,
+  useReducer
+} from 'react'
 import useDynamicRefs from 'use-dynamic-refs'
-import { Xwrapper } from 'react-xarrows'
 import PropTypes from 'prop-types'
 
 import { SelectionArea } from '../SelectionArea'
@@ -26,6 +31,16 @@ export const Schematic = ({
 
   const [selectingItems, setSelectingItems] = useState(new Set())
   const [selectedItems, setSelectedItems] = useState(new Set())
+
+  const [, reRender] = useReducer(() => ({}), {})
+  const renderCount = useRef(0)
+  useEffect(() => {
+    renderCount.current += 1
+    if (renderCount.current === 3) {
+      reRender()
+      renderCount.current = 0
+    }
+  })
 
   /**
    * Update the coordinates of a Component.
@@ -71,75 +86,74 @@ export const Schematic = ({
       }}
       {...rest}
     >
-      <Xwrapper>
-        {children}
+      {children}
 
-        <SelectionArea
-          getRef={getRef}
-          parentRef={canvasRef}
-          ignoreItems={schematic.labels}
-          selectableItems={schematic.items}
-          selectingItems={selectingItems}
-          setSelectingItems={setSelectingItems}
-          selectedItems={selectedItems}
-          setSelectedItems={setSelectedItems}
+      <SelectionArea
+        getRef={getRef}
+        parentRef={canvasRef}
+        ignoreItems={schematic.labels}
+        selectableItems={schematic.items}
+        selectingItems={selectingItems}
+        setSelectingItems={setSelectingItems}
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
+        disabled={readOnly}
+      />
+
+      {schematic?.data?.components?.map((comp) => {
+        comp.ports.forEach((port) => (port.ref = setRef(port.id)))
+        return (
+          <ElectricalCore
+            {...comp}
+            key={comp.id}
+            ref={setRef(comp.id)}
+            gridSize={gridSize}
+            updatePosition={updatePosition}
+            onDrag={reRender}
+            isSelected={selectedItems.has(comp.id)}
+            disabled={readOnly}
+          />
+        )
+      })}
+
+      {schematic?.data?.nodes?.map((node) => (
+        <Node
+          {...node}
+          key={node.id}
+          ref={setRef(node.id)}
+          gridSize={gridSize}
+          updatePosition={updatePosition}
+          isSelected={selectedItems.has(node.id)}
           disabled={readOnly}
         />
+      ))}
 
-        {schematic?.data?.components?.map((comp) => {
-          comp.ports.forEach((port) => (port.ref = setRef(port.id)))
-          return (
-            <ElectricalCore
-              {...comp}
-              key={comp.id}
-              ref={setRef(comp.id)}
+      {schematic?.data?.connections?.map(
+        (conn) =>
+          conn.start &&
+          conn.end && (
+            <Connection
+              {...conn}
+              key={conn.id}
+              ref={setRef(conn.id)}
+              start={getRef(conn.start)}
+              end={getRef(conn.end)}
               gridSize={gridSize}
               updatePosition={updatePosition}
-              isSelected={selectedItems.has(comp.id)}
+              isSelected={selectedItems.has(conn.id)}
               disabled={readOnly}
             />
           )
-        })}
+      )}
 
-        {schematic?.data?.nodes?.map((node) => (
-          <Node
-            {...node}
-            key={node.id}
-            ref={setRef(node.id)}
-            gridSize={gridSize}
-            updatePosition={updatePosition}
-            isSelected={selectedItems.has(node.id)}
-            disabled={readOnly}
-          />
-        ))}
-
-        {schematic?.data?.connections?.map(
-          (conn) =>
-            conn.start &&
-            conn.end && (
-              <Connection
-                {...conn}
-                key={conn.id}
-                ref={setRef(conn.id)}
-                start={getRef(conn.start)}
-                end={getRef(conn.end)}
-                gridSize={gridSize}
-                updatePosition={updatePosition}
-                isSelected={selectedItems.has(conn.id)}
-                disabled={readOnly}
-              />
-            )
-        )}
-
-        {schematic?.labels?.map((label) => (
-          <Label
-            key={label.id}
-            ref={setRef(label.id)}
-            updatePosition={updatePosition}
-            {...label}
-          />
-        ))}
-      </Xwrapper>
+      {schematic?.labels?.map((label) => (
+        <Label
+          key={label.id}
+          ref={setRef(label.id)}
+          updatePosition={updatePosition}
+          {...label}
+        />
+      ))}
     </div>
   )
 }
