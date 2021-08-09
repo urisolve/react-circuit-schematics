@@ -32,6 +32,7 @@ export const Schematic = ({
   const [selectingItems, setSelectingItems] = useState(new Set())
   const [selectedItems, setSelectedItems] = useState(new Set())
 
+  // Work-around for react-xarrows updating the connection.
   const [, reRender] = useReducer(() => ({}), {})
   const renderCount = useRef(0)
   useEffect(() => {

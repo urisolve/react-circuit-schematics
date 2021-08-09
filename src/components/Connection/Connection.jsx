@@ -15,23 +15,33 @@ export const Connection = forwardRef(
       gridBreak,
       onClick,
       updatePosition,
+      isSelected,
       ...rest
     },
     ref
   ) => {
     return (
-      <div ref={ref}>
-        <XArrow
-          start={start}
-          end={end}
-          path={type}
-          showHead={false}
-          gridBreak={gridBreak}
-          divContainerStyle={{ zIndex: -1, opacity: properties.opacity ?? 1 }}
-          passProps={{ onClick }}
-          {...rest}
-        />
-      </div>
+      <XArrow
+        start={start}
+        end={end}
+        path={type}
+        showHead={false}
+        gridBreak={gridBreak}
+        divContainerStyle={{
+          zIndex: -1,
+          opacity: properties.opacity ?? 1
+        }}
+        // Selection
+        SVGcanvasStyle={{
+          filter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
+          WebkitFilter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`
+        }}
+        divContainerProps={{ ref }} // ! Temporary fix
+        // SVGcanvasProps={{ ref }}
+        // arrowBodyProps={{ ref }}
+        passProps={{ onClick }}
+        {...rest}
+      />
     )
   }
 )
