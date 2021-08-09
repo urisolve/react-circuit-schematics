@@ -37,7 +37,7 @@ export const Schematic = ({
   const renderCount = useRef(0)
   useEffect(() => {
     renderCount.current += 1
-    if (renderCount.current === 3) {
+    if (renderCount.current === 2) {
       reRender()
       renderCount.current = 0
     }
@@ -124,6 +124,7 @@ export const Schematic = ({
           ref={setRef(node.id)}
           gridSize={gridSize}
           updatePosition={updatePosition}
+          onDrag={reRender}
           isSelected={selectedItems.has(node.id)}
           disabled={readOnly}
         />
