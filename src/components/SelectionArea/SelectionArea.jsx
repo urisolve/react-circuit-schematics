@@ -51,6 +51,7 @@ export const SelectionArea = forwardRef(
       }
 
       // Calculate the bounding areas of the items marked to ignore
+      ignoreAreas.current = []
       for (const elem of ignoreItems) {
         const elemArea = getRef(elem.id).current.getBoundingClientRect()
         ignoreAreas.current.push({
@@ -63,6 +64,7 @@ export const SelectionArea = forwardRef(
       }
 
       // Calculate the bounding areas of the items
+      selectableAreas.current = []
       for (const elem of selectableItems) {
         const elemArea = getRef(elem.id).current.getBoundingClientRect()
         selectableAreas.current.push({
