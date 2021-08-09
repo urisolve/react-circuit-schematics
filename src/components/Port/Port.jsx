@@ -48,7 +48,7 @@ export const Port = forwardRef(
         }}
         {...rest}
       >
-        <div ref={ref} />
+        <div ref={ref} style={{ width: '100%', height: '100%' }} />
       </div>
     )
   }

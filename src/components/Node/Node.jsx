@@ -1,6 +1,5 @@
 import React, { forwardRef, useRef } from 'react'
 import Draggable from 'react-draggable'
-import { useXarrow } from 'react-xarrows'
 import { PropTypes } from 'prop-types'
 
 import cx from 'classnames'
@@ -9,7 +8,6 @@ import styles from './Node.module.css'
 export const Node = forwardRef(
   ({ id, position, properties, gridSize, updatePosition, ...rest }, ref) => {
     const draggableRef = useRef()
-    const updateXarrow = useXarrow()
 
     return (
       <Draggable
@@ -18,7 +16,6 @@ export const Node = forwardRef(
         position={position}
         nodeRef={draggableRef}
         grid={[gridSize, gridSize]}
-        onDrag={(e, position) => updateXarrow()}
         onStop={(e, position) => updatePosition(id, position)}
         {...rest}
       >
@@ -32,7 +29,7 @@ export const Node = forwardRef(
             opacity: properties.opacity ?? 1
           }}
         >
-          <div ref={ref} />
+          <div ref={ref} style={{ width: '100%', height: '100%' }} />
         </div>
       </Draggable>
     )
