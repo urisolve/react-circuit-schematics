@@ -73,7 +73,7 @@ export const RLC_Circuit = {
     {
       id: 'ef4bc1f6-e72f-4c4c-b9bb-76ea5d36c13b',
       type: 'Capacitor',
-      position: { x: 500, y: 200, angle: 90 },
+      position: { x: 510, y: 200, angle: 90 },
       label: {
         name: 'C',
         value: '1µ',
