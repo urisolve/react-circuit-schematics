@@ -102,7 +102,8 @@ export const SelectionArea = forwardRef(
           if (areasIntersect(clickPoint, area)) {
             if (event.ctrlKey)
               setSelectedItems((items) => {
-                items.add(area.id)
+                if (items.has(area.id)) items.delete(area.id)
+                else items.add(area.id)
                 return items
               })
             else setSelectedItems(new Set([area.id]))
