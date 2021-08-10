@@ -29,17 +29,22 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
       // Calculate all node connections
       for (const node of schematic.nodes) {
         node.connections = []
-        for (const conn of schematic.connections)
+        for (const conn of schematic.connections) {
           if (conn.start === node.id || conn.end === node.id)
             node.connections.push(conn.id)
+        }
       }
 
       // Calculate all port connections
-      for (const component of schematic.components)
-        for (const port of component.ports)
-          for (const conn of schematic.connections)
+      for (const component of schematic.components) {
+        for (const port of component.ports) {
+          port.connection = null
+          for (const conn of schematic.connections) {
             if (conn.start === port.id || conn.end === port.id)
               port.connection = conn.id
+          }
+        }
+      }
 
       return schematic
     })
