@@ -1,9 +1,16 @@
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { cloneDeep, compact, find, isEqual, isFunction } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
+import useDynamicRefs from 'use-dynamic-refs'
 
 import { useHistory } from '../useHistory'
-import { hasLabel, isComponent, isConnection } from '../../util'
+import {
+  hasLabel,
+  isComponent,
+  isConnection,
+  isPort,
+  rotateCoords
+} from '../../util'
 
 const emptySchematic = { components: [], nodes: [], connections: [] }
 
@@ -15,6 +22,7 @@ const emptySchematic = { components: [], nodes: [], connections: [] }
  * @returns {Object} Properties and methods that control the schematic.
  */
 export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
+  const [getRef] = useDynamicRefs()
   const [schematic, setSchematic] = useState({
     ...emptySchematic,
     ...initialSchematic
@@ -78,9 +86,68 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
   )
 
   /**
-   * Save previous schematic history
+   * Take care of connections
    */
-  const history = useHistory(setSchematic, maxHistoryLength)
+  useEffect(() => {
+    setSchematic((schematic) => {
+      // Map of (position string) -> (element id)
+      const seenPositions = new Map()
+
+      // Build map of all port position
+      for (const component of schematic.components) {
+        for (const port of component.ports) {
+          // Calculate component's width and height
+          const compRef = getRef(component.id).current
+          const { width, height } = compRef.getBoundingClientRect()
+
+          // Calculate port's real position
+          const rotatedCoords = rotateCoords(
+            port.position,
+            component.position.angle
+          )
+          const realPos = {
+            x: component.position.x + rotatedCoords.x * width,
+            y: component.position.y + rotatedCoords.y * height
+          }
+
+          // Mark it as seen
+          const positionString = `${realPos.x} ${realPos.y}`
+          seenPositions.set(positionString, port.id)
+        }
+      }
+
+      // Check if nodes overlay ports or other nodes
+      for (const node of schematic.nodes) {
+        const positionString = `${node.position.x} ${node.position.y}`
+
+        // If the node doesn't overlay any of the already seen ones,
+        if (seenPositions.has(positionString)) {
+          // Calculate what is being overlaid
+          const pattern = { id: seenPositions.get(positionString) }
+          const overlaidElem =
+            find(items, pattern) ??
+            find(find(items, { ports: [pattern] }).ports, pattern)
+
+          // If the port is already connected, do nothing
+          if (isPort(overlaidElem) && overlaidElem.connection) return schematic
+
+          // Move connections from that node to the overlaid element
+          for (const conn of schematic.connections) {
+            if (conn.start === node.id) conn.start = overlaidElem.id
+            if (conn.end === node.id) conn.end = overlaidElem.id
+          }
+
+          // Delete the useless node
+          schematic.nodes = schematic.nodes.filter((n) => n.id !== node.id)
+        }
+
+        // Mark position as seen
+        else seenPositions.set(positionString, node.id)
+      }
+
+      return schematic
+    })
+  }, [setSchematic, schematic, items])
 
   /**
    * Adds an element to the schematic.
