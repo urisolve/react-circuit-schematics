@@ -61,20 +61,26 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
    * @param {Object} element The element to be added.
    */
   const add = useCallback(
-    (element) => {
+    (elements) => {
       setSchematic((oldSchematic) => {
         // Make a clone of the current schematic
         const newSchematic = cloneDeep(oldSchematic)
 
-        // Where should the element be added?
-        const where = isComponent(element)
-          ? 'components'
-          : isConnection(element)
-          ? 'connections'
-          : 'nodes'
+        // Force element into array format
+        if (!(elements instanceof Array)) elements = [elements]
 
-        // Add the new element to the schematic
-        newSchematic[where].push({ id: uuidv4(), ...element })
+        // Add all given elements to the schematic
+        for (const element of elements) {
+          // Where should the element be added?
+          const where = isComponent(element)
+            ? 'components'
+            : isConnection(element)
+            ? 'connections'
+            : 'nodes'
+
+          // Add the new element to the schematic
+          newSchematic[where].push({ id: uuidv4(), ...element })
+        }
 
         // If the changes are valid, save the old schematic
         if (!isEqual(oldSchematic, newSchematic)) history.save(oldSchematic)
