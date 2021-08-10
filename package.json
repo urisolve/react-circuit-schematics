@@ -5,15 +5,15 @@
   "author": "urisolve",
   "license": "MIT",
   "repository": "urisolve/react-circuit-schematics",
-  "main": "dist/index.js",
-  "module": "dist/index.modern.js",
   "source": "src/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
   "engines": {
     "node": ">=10"
   },
   "scripts": {
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
     "chromatic": "npx chromatic --project-token=d486c344d97e",
     "build": "microbundle-crl --no-compress --format modern,cjs",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
@@ -21,7 +21,7 @@
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
     "test:lint": "eslint .",
-    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
+    "test:unit": "cross-env CI=1 SKIP_PREFLIGHT_CHECK=true react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build"
@@ -36,7 +36,6 @@
     "@storybook/addon-links": "^6.3.6",
     "@storybook/react": "^6.3.6",
     "babel-eslint": "^10.0.3",
-    "babel-loader": "^8.2.2",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.7.0",
