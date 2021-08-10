@@ -36,14 +36,12 @@ export const Port = forwardRef(
       <div
         className={styles.port}
         style={{
-          // The size of the port
+          // The properties
           width: properties.radius * 2,
           height: properties.radius * 2,
-
-          // The coloring
           backgroundColor: properties.color,
 
-          // The positioning of the port
+          // The positioning
           ...realPos
         }}
         {...rest}
