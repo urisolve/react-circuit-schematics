@@ -1,9 +1,11 @@
-import { useState, useCallback, useMemo } from 'react'
-import { cloneDeep, compact, isEqual, isFunction } from 'lodash'
+import { useState, useCallback, useMemo, useEffect } from 'react'
+import { cloneDeep, compact, find, isEqual, isFunction } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
 import { useHistory } from '../useHistory'
 import { hasLabel, isComponent, isConnection } from '../../util'
+
+const emptySchematic = { components: [], nodes: [], connections: [] }
 
 /**
  * A React Hook that takes care of the logic required to run a schematic.
@@ -14,11 +16,34 @@ import { hasLabel, isComponent, isConnection } from '../../util'
  */
 export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
   const [schematic, setSchematic] = useState({
-    components: [],
-    nodes: [],
-    connections: [],
+    ...emptySchematic,
     ...initialSchematic
   })
+  const history = useHistory(setSchematic, maxHistoryLength)
+
+  /**
+   * Calculate the number of connections that are connected each node and port.
+   */
+  useEffect(() => {
+    setSchematic((schematic) => {
+      // Calculate all node connections
+      for (const node of schematic.nodes) {
+        node.connections = []
+        for (const conn of schematic.connections)
+          if (conn.start === node.id || conn.end === node.id)
+            node.connections.push(conn.id)
+      }
+
+      // Calculate all port connections
+      for (const component of schematic.components)
+        for (const port of component.ports)
+          for (const conn of schematic.connections)
+            if (conn.start === port.id || conn.end === port.id)
+              port.connection = conn.id
+
+      return schematic
+    })
+  }, [setSchematic, schematic])
 
   /**
    * Array of all the schematic's items.
@@ -170,6 +195,7 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
       data: schematic,
       items,
       labels,
+
       add,
       deleteById,
       editById

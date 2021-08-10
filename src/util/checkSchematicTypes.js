@@ -24,7 +24,16 @@ export const isConnection = (element) =>
  * @returns Wether or not the element is a Node.
  */
 export const isNode = (element) =>
-  !isComponent(element) && !isConnection(element)
+  Object.prototype.hasOwnProperty.call(element, 'connections')
+
+/**
+ * Check if the given element is a Port.
+ *
+ * @param {Object} element A schematic element.
+ * @returns Wether or not the element is a Port.
+ */
+export const isPort = (element) =>
+  Object.prototype.hasOwnProperty.call(element, 'connection')
 
 /**
  * Check if the given element has a Label.
