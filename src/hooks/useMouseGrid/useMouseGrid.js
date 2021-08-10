@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { throttle } from 'lodash'
+import lodash from 'lodash'
 
 import { snapToGrid } from '../../util'
 
@@ -7,7 +7,7 @@ export const useMouseGrid = (ref, gridSize) => {
   const [mousePosition, setMousePosition] = useState({ x: null, y: null })
 
   const updateMousePosition = useCallback(
-    throttle((e) => {
+    lodash.throttle((e) => {
       const rect = ref.current.getBoundingClientRect()
       const x = snapToGrid(e.clientX - rect.left, gridSize)
       const y = snapToGrid(e.clientY - rect.top, gridSize)

@@ -5,7 +5,7 @@ import React, {
   useState,
   useCallback
 } from 'react'
-import { throttle } from 'lodash'
+import lodash from 'lodash'
 
 import { areasIntersect } from '../../util'
 
@@ -139,7 +139,7 @@ export const SelectionArea = forwardRef(
      * Handler for moving the mouse.
      */
     const onMouseMove = useCallback(
-      throttle((event) => {
+      lodash.throttle((event) => {
         // Start dragging
         setIsDragging(true)
 

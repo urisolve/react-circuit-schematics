@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef } from 'react'
 import Draggable from 'react-draggable'
-import { PropTypes } from 'prop-types'
+import PropTypes from 'prop-types'
 
 import cx from 'classnames'
 import styles from './Node.module.css'

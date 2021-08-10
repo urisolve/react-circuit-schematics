@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo, useEffect } from 'react'
-import { cloneDeep, compact, find, isEqual, isFunction } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import useDynamicRefs from 'use-dynamic-refs'
+import lodash from 'lodash'
 
 import { useHistory } from '../useHistory'
 import {
@@ -75,7 +75,7 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
    */
   const labels = useMemo(
     () =>
-      compact(
+      lodash.compact(
         items.map((item) =>
           hasLabel(item)
             ? { ...item.label, id: uuidv4(), owner: item.id }
@@ -125,8 +125,8 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
           // Calculate what is being overlaid
           const pattern = { id: seenPositions.get(positionString) }
           const overlaidElem =
-            find(items, pattern) ??
-            find(find(items, { ports: [pattern] }).ports, pattern)
+            lodash.find(items, pattern) ??
+            lodash.find(lodash.find(items, { ports: [pattern] }).ports, pattern)
 
           // If the port is already connected, do nothing
           if (isPort(overlaidElem) && overlaidElem.connection) return schematic
@@ -161,7 +161,7 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
     (elements) => {
       setSchematic((oldSchematic) => {
         // Make a clone of the current schematic
-        const newSchematic = cloneDeep(oldSchematic)
+        const newSchematic = lodash.cloneDeep(oldSchematic)
 
         // Force element into array format
         if (!(elements instanceof Array)) elements = [elements]
@@ -180,7 +180,8 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
         }
 
         // If the changes are valid, save the old schematic
-        if (!isEqual(oldSchematic, newSchematic)) history.save(oldSchematic)
+        if (!lodash.isEqual(oldSchematic, newSchematic))
+          history.save(oldSchematic)
 
         return newSchematic
       })
@@ -201,7 +202,7 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
     (id) => {
       useSchematic((oldSchematic) => {
         // Make a clone of the current schematic
-        const newSchematic = cloneDeep(oldSchematic)
+        const newSchematic = lodash.cloneDeep(oldSchematic)
 
         // Delete the element
         for (const type in newSchematic)
@@ -213,7 +214,8 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
         console.error('Make the connections stay in the same place')
 
         // If the changes are valid, save the old schematic
-        if (!isEqual(oldSchematic, newSchematic)) history.save(oldSchematic)
+        if (!lodash.isEqual(oldSchematic, newSchematic))
+          history.save(oldSchematic)
 
         return newSchematic
       })
@@ -239,18 +241,20 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
     (id, edits, saveChanges = true) => {
       setSchematic((oldSchematic) => {
         // Make a clone of the current schematic
-        const newSchematic = cloneDeep(oldSchematic)
+        const newSchematic = lodash.cloneDeep(oldSchematic)
 
         // Apply the edits
         for (const type in newSchematic) {
           newSchematic[type] = newSchematic[type].map((elem) => {
             if (elem.id !== id) return elem
-            return isFunction(edits) ? edits(elem) : { ...elem, ...edits }
+            return lodash.isFunction(edits)
+              ? edits(elem)
+              : { ...elem, ...edits }
           })
         }
 
         // If the changes are valid, save the old schematic
-        if (saveChanges && !isEqual(oldSchematic, newSchematic))
+        if (saveChanges && !lodash.isEqual(oldSchematic, newSchematic))
           history.save(oldSchematic)
 
         return newSchematic

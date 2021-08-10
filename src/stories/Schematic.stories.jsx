@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-import { omit } from 'lodash'
 import React, { useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import lodash from 'lodash'
 
 import { Schematic } from '../components/Schematic'
 import { useSchematic } from '../hooks/useSchematic'
@@ -112,7 +112,7 @@ export const UndoAndRedo = () => {
 }
 
 export const AddConnections = () => {
-  const noConnection = omit(RLC_Circuit, 'connections')
+  const noConnection = lodash.omit(RLC_Circuit, 'connections')
   const { schematic } = useSchematic(noConnection)
 
   const addConnection = useCallback(() => {
