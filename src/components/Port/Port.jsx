@@ -2,35 +2,14 @@ import React, { forwardRef, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 import styles from './Port.module.css'
+import { rotateCoords } from '../../util'
 
 export const Port = forwardRef(
   ({ position, bounds, properties, rotation, ...rest }, ref) => {
-    const realPos = useMemo(() => {
-      // Shift the coordinates to origin
-      let x = position.x * 2 - 1
-      let y = position.y * 2 - 1
-
-      // Convert to polar coordinates
-      const radius = Math.sqrt(x * x + y * y)
-      let teta = Math.atan2(y, x)
-
-      // Apply the rotation
-      teta += rotation * (Math.PI / 180)
-
-      // Convert back to Cartesian coordinates
-      x = radius * Math.cos(teta)
-      y = radius * Math.sin(teta)
-
-      // Shift the coordinates back
-      x = (x + 1) / 2
-      y = (y + 1) / 2
-
-      // Scale the position to fit the bounds
-      return {
-        left: x * bounds.width - properties.radius,
-        top: y * bounds.height - properties.radius
-      }
-    }, [position, rotation, properties?.radius])
+    const realPos = useMemo(
+      () => rotateCoords(position, rotation),
+      [position, rotation]
+    )
 
     return (
       <div
@@ -42,7 +21,8 @@ export const Port = forwardRef(
           backgroundColor: properties.color,
 
           // The positioning
-          ...realPos
+          left: realPos.x * bounds.width - properties.radius,
+          top: realPos.y * bounds.height - properties.radius
         }}
         {...rest}
       >
