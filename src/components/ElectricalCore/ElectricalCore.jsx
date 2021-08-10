@@ -48,6 +48,18 @@ export const ElectricalCore = forwardRef(
       return Array.isArray(src) ? src[altImageIdx ?? 0] : src
     }, [altImageIdx])
 
+    /**
+     * Calculate the style that controls the rotation of the image
+     */
+    const rotationStyle = useMemo(() => {
+      const rotationString = `rotate(${position?.angle ?? 0}deg)`
+      return {
+        transform: rotationString,
+        WebkitTransform: rotationString,
+        msTransform: rotationString
+      }
+    }, [position.angle])
+
     return (
       <Draggable
         handle='.component-handle'
@@ -62,9 +74,9 @@ export const ElectricalCore = forwardRef(
         <div className={styles.wrapper} ref={draggableRef}>
           <img
             style={{
-              transform: `rotate(${position?.angle ?? 0}deg)`,
               width: width,
               height: height,
+              ...rotationStyle,
 
               // Selection
               filter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
