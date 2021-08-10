@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
-import React from 'react'
+import { omit } from 'lodash'
+import React, { useCallback } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 import { Schematic } from '../components/Schematic'
 import { useSchematic } from '../hooks/useSchematic'
@@ -103,6 +105,27 @@ export const UndoAndRedo = () => {
       <button onClick={history.redo} disabled={!history.canRedo}>
         Redo
       </button>
+
+      <Schematic schematic={schematic} width={800} height={500} />
+    </>
+  )
+}
+
+export const AddConnections = () => {
+  const noConnection = omit(RLC_Circuit, 'connections')
+  const { schematic } = useSchematic(noConnection)
+
+  const addConnection = useCallback(() => {
+    const node1 = { id: uuidv4(), position: { x: 100, y: 100 } }
+    const node2 = { id: uuidv4(), position: { x: 400, y: 400 } }
+    const connection = { start: node1.id, end: node2.id }
+
+    schematic.add([node1, node2, connection])
+  }, [schematic.add])
+
+  return (
+    <>
+      <button onClick={addConnection}>Add Connection</button>
 
       <Schematic schematic={schematic} width={800} height={500} />
     </>
