@@ -1,4 +1,5 @@
 export * from './areas'
-export * from './checkSchematicTypes'
 export * from './coordinates'
-export * from './snapToGrid'
+export * from './grid'
+export * from './random'
+export * from './schematicTypes'
