@@ -32,7 +32,7 @@ There is a Storybook hosted on Netlify of this library that you can use as docum
 
 URL: https://react-draw-circuits.netlify.app/
 
-You can also host the storybook on you own machine by cloning this repository and executing `npm run storybook` or `yarn storybook.`
+You can also host the storybook on you own machine by cloning this repository and executing `npm run storybook` or `yarn storybook`.
 
 ## License
 
