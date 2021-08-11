@@ -31,7 +31,7 @@ export const DefaultLabel = (props) => {
             className={styles.editable}
             onBlur={() => setContentEditable(valueRef, false)}
             // Content-Editable
-            onDoubleClick={() => setContentEditable(valueRef, true)}
+            onDoubleClick={() => setContentEditable(valueRef, !props.disabled)}
             onInput={(e) => props.onValueChange(e.currentTarget.textContent)}
             suppressContentEditableWarning
           >
