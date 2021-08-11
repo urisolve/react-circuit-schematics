@@ -46,13 +46,44 @@ export const UndoAndRedo = () => {
   )
 }
 
-export const AddConnections = () => {
-  const noConnection = lodash.omit(RLC_Circuit, 'connections')
-  const { schematic } = useSchematic(noConnection)
+export const BuildCircuit = () => {
+  const [width, height] = [800, 500]
+  const { schematic } = useSchematic()
+
+  // Generator function for random positions
+  function* randomPosGenerator(minX, maxX, minY, maxY) {
+    const genRandomIntInRange = (min, max) =>
+      Math.floor(Math.random() * (max - min + 1) + min)
+
+    while (true)
+      yield {
+        x: genRandomIntInRange(minX, maxX),
+        y: genRandomIntInRange(minY, maxY)
+      }
+  }
+
+  // Initialization of the generator
+  const randomPos = randomPosGenerator(0, width - 100, 0, height - 100)
+  const genRandomPos = () => randomPos.next().value
+
+  const addResistor = useCallback(() => {
+    schematic.add({
+      type: 'Resistor',
+      position: genRandomPos(),
+      ports: [
+        { id: uuidv4(), position: { x: 0, y: 0.5 } },
+        { id: uuidv4(), position: { x: 1, y: 0.5 } }
+      ]
+    })
+  }, [schematic.add])
+
+  const addNode = useCallback(() => {
+    schematic.add({ position: genRandomPos() })
+  }, [schematic.add])
 
   const addConnection = useCallback(() => {
-    const node1 = { id: uuidv4(), position: { x: 100, y: 100 } }
-    const node2 = { id: uuidv4(), position: { x: 400, y: 400 } }
+    const node1 = { id: uuidv4(), position: genRandomPos() }
+    const node2 = { id: uuidv4(), position: genRandomPos() }
     const connection = { start: node1.id, end: node2.id }
 
     schematic.add([node1, node2, connection])
@@ -60,6 +91,8 @@ export const AddConnections = () => {
 
   return (
     <>
+      <button onClick={addResistor}>Add Component</button>
+      <button onClick={addNode}>Add Node</button>
       <button onClick={addConnection}>Add Connection</button>
 
       <Schematic schematic={schematic} width={800} height={500} />

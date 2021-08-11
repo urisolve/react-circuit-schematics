@@ -20,6 +20,6 @@ export const snapValueToGrid = (value, gridSize) => {
  * @returns The snapped position.
  */
 export const snapPosToGrid = (position, gridSize) => ({
-  x: snapValueToGrid(position.x, gridSize),
-  y: snapValueToGrid(position.y, gridSize)
+  x: snapValueToGrid(position.x ?? 0, gridSize),
+  y: snapValueToGrid(position.y ?? 0, gridSize)
 })

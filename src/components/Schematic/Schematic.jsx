@@ -14,7 +14,7 @@ import { Connection } from '../Connection'
 import { Node } from '../Node'
 import { Label } from '../Label'
 
-import { snapToGrid } from '../../util'
+import { snapValueToGrid } from '../../util'
 
 export const Schematic = ({
   schematic,
@@ -53,8 +53,8 @@ export const Schematic = ({
   const updatePosition = useCallback(
     (id, { x, y }, isLabel = false) => {
       // Snap the values to the grid
-      x = snapToGrid(x, gridSize)
-      y = snapToGrid(y, gridSize)
+      x = snapValueToGrid(x, gridSize)
+      y = snapValueToGrid(y, gridSize)
 
       // Apply the new position
       schematic.editById(id, (elem) => {

@@ -3,16 +3,18 @@ import { v4 as uuidv4 } from 'uuid'
 import useDynamicRefs from 'use-dynamic-refs'
 import lodash from 'lodash'
 
-import { useHistory } from '../useHistory'
 import {
   hasLabel,
   isComponent,
   isConnection,
   isPort,
-  rotateCoords
+  rotateCoords,
+  snapPosToGrid
 } from '../../util'
+import { useHistory } from '../useHistory'
 
 const emptySchematic = { components: [], nodes: [], connections: [] }
+const defaultOptions = { maxHistoryLength: 10, gridSize: 10 }
 
 /**
  * A React Hook that takes care of the logic required to run a schematic.
@@ -22,13 +24,11 @@ const emptySchematic = { components: [], nodes: [], connections: [] }
  * @returns {Object} Properties and methods that control the schematic.
  */
 export const useSchematic = (initialSchematic = {}, options = {}) => {
-  options = { maxHistoryLength: 10, gridSize: 10, ...options }
+  initialSchematic = { ...emptySchematic, ...initialSchematic }
+  options = { ...defaultOptions, ...options }
 
   const [getRef] = useDynamicRefs()
-  const [schematic, setSchematic] = useState({
-    ...emptySchematic,
-    ...initialSchematic
-  })
+  const [schematic, setSchematic] = useState(initialSchematic)
   const history = useHistory(setSchematic, options.maxHistoryLength)
 
   /**
@@ -94,7 +94,7 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
       // Map of (position string) -> (element id)
       const seenPositions = new Map()
 
-      // Build map of all port position
+      // Build hash map of all ports positions
       for (const component of schematic.components) {
         for (const port of component.ports) {
           // Calculate component's width and height
@@ -111,15 +111,15 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
             y: component.position.y + rotatedCoords.y * height
           }
 
-          // Mark it as seen
-          const positionString = `${realPos.x} ${realPos.y}`
+          // Add it to the hash map
+          const positionString = JSON.stringify(realPos)
           seenPositions.set(positionString, port.id)
         }
       }
 
       // Check if nodes overlay ports or other nodes
       for (const node of schematic.nodes) {
-        const positionString = `${node.position.x} ${node.position.y}`
+        const positionString = JSON.stringify(node.position)
 
         // If the node doesn't overlay any of the already seen ones,
         if (seenPositions.has(positionString)) {
@@ -167,14 +167,17 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
         // Force element into array format
         if (!(elements instanceof Array)) elements = [elements]
 
-        // Add all given elements to the schematic
+        // Add all of the given elements to the schematic
         for (const element of elements) {
-          // Where should the element be added?
-          let where = 'nodes'
-          if (isConnection(element)) where = 'connections'
-          else if (isComponent(element)) where = 'components'
+          // Lock the element's position to the grid
+          if (!isConnection(element)) {
+            element.position = snapPosToGrid(element.position, options.gridSize)
+          }
 
           // Add the new element to the schematic
+          let where = 'nodes'
+          if (isComponent(element)) where = 'components'
+          else if (isConnection(element)) where = 'connections'
           newSchematic[where].push({ id: uuidv4(), ...element })
         }
 
