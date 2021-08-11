@@ -21,13 +21,15 @@ const emptySchematic = { components: [], nodes: [], connections: [] }
  * @param {Object} options Extra options to define optional behaviour.
  * @returns {Object} Properties and methods that control the schematic.
  */
-export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
+export const useSchematic = (initialSchematic = {}, options = {}) => {
+  options = { maxHistoryLength: 10, gridSize: 10, ...options }
+
   const [getRef] = useDynamicRefs()
   const [schematic, setSchematic] = useState({
     ...emptySchematic,
     ...initialSchematic
   })
-  const history = useHistory(setSchematic, maxHistoryLength)
+  const history = useHistory(setSchematic, options.maxHistoryLength)
 
   /**
    * Calculate each Node and Port's connections.
