@@ -161,7 +161,7 @@ export const Schematic = ({
         />
       ))}
 
-      {!readOnly && (
+      {!readOnly && showCoords && (
         <p
           style={{ margin: '10px', position: 'absolute', top: 0, right: 0 }}
         >{`${mousePosition.x || 0}, ${mousePosition.y || 0}`}</p>
