@@ -13,8 +13,8 @@ export const useMousePosition = (ref, fps = 30) => {
   const calcMousePosition = useCallback(
     lodash.throttle((event) => {
       setMousePosition({
-        x: event.pageX - area.current.left,
-        y: event.pageY - area.current.top
+        x: Math.floor(event.pageX - area.current.left),
+        y: Math.floor(event.pageY - area.current.top)
       })
     }, 1000 / fps),
     [setMousePosition, fps]
