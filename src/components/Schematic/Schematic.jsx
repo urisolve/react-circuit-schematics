@@ -164,7 +164,7 @@ export const Schematic = ({
       {!readOnly && (
         <p
           style={{ margin: '10px', position: 'absolute', top: 0, right: 0 }}
-        >{`${mousePosition.x}, ${mousePosition.y}`}</p>
+        >{`${mousePosition.x || 0}, ${mousePosition.y || 0}`}</p>
       )}
     </div>
   )
