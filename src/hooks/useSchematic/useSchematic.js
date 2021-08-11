@@ -30,27 +30,26 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
   const history = useHistory(setSchematic, maxHistoryLength)
 
   /**
-   * Calculate the number of connections that are connected each node and port.
+   * Calculate each Node and Port's connections.
    */
   useEffect(() => {
     setSchematic((schematic) => {
-      // Calculate all node connections
+      // Calculate all node connections and type
       for (const node of schematic.nodes) {
         node.connections = []
-        for (const conn of schematic.connections) {
+        for (const conn of schematic.connections)
           if (conn.start === node.id || conn.end === node.id)
             node.connections.push(conn.id)
-        }
+        node.type = node.connections.length > 2 ? 'real' : 'virtual'
       }
 
       // Calculate all port connections
       for (const component of schematic.components) {
         for (const port of component.ports) {
           port.connection = null
-          for (const conn of schematic.connections) {
+          for (const conn of schematic.connections)
             if (conn.start === port.id || conn.end === port.id)
               port.connection = conn.id
-          }
         }
       }
 
