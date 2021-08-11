@@ -15,12 +15,14 @@ import { Node } from '../Node'
 import { Label } from '../Label'
 
 import { snapValueToGrid } from '../../util'
+import { useMousePosition } from '../../hooks/useMousePosition'
 
 export const Schematic = ({
   schematic,
   width,
   height,
   readOnly,
+  showCoords,
   gridSize,
   gridColor,
   children,
@@ -28,6 +30,7 @@ export const Schematic = ({
 }) => {
   const [getRef, setRef] = useDynamicRefs()
   const canvasRef = useRef()
+  const mousePosition = useMousePosition(canvasRef)
 
   const [selectingItems, setSelectingItems] = useState(new Set())
   const [selectedItems, setSelectedItems] = useState(new Set())
@@ -157,6 +160,12 @@ export const Schematic = ({
           disabled={readOnly}
         />
       ))}
+
+      {!readOnly && (
+        <p
+          style={{ margin: '10px', position: 'absolute', top: 0, right: 0 }}
+        >{`${mousePosition.x}, ${mousePosition.y}`}</p>
+      )}
     </div>
   )
 }
@@ -179,6 +188,10 @@ Schematic.propTypes = {
    */
   readOnly: PropTypes.bool,
   /**
+   * Show the coordinates of the mouse on the schematic
+   */
+  showCoords: PropTypes.bool,
+  /**
    * The size of the grid units, in pixels
    */
   gridSize: PropTypes.number,
@@ -192,6 +205,8 @@ Schematic.defaultProps = {
   schematic: {},
   width: '100%',
   height: '100%',
+  readOnly: false,
+  showCoords: true,
   gridSize: 10,
   gridColor: '#777'
 }
