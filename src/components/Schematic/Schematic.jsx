@@ -150,10 +150,11 @@ export const Schematic = ({
 
       {schematic?.labels?.map((label) => (
         <Label
+          {...label}
           key={label.id}
           ref={setRef(label.id)}
           updatePosition={updatePosition}
-          {...label}
+          disabled={readOnly}
         />
       ))}
     </div>
