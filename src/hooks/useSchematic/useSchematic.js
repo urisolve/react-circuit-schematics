@@ -168,11 +168,9 @@ export const useSchematic = (initialSchematic = {}, maxHistoryLength = 10) => {
         // Add all given elements to the schematic
         for (const element of elements) {
           // Where should the element be added?
-          const where = isComponent(element)
-            ? 'components'
-            : isConnection(element)
-            ? 'connections'
-            : 'nodes'
+          let where = 'nodes'
+          if (isConnection(element)) where = 'connections'
+          else if (isComponent(element)) where = 'components'
 
           // Add the new element to the schematic
           newSchematic[where].push({ id: uuidv4(), ...element })
