@@ -24,11 +24,11 @@ export const useMousePosition = (ref, fps = 30) => {
   useEffect(() => {
     if (!ref.current) return;
     ref.current.addEventListener('mousemove', calcMousePosition);
-    const temp = ref;
+    const cleanup = ref;
 
     return () => {
-      if (!temp.current) return;
-      temp.current.removeEventListener('mousemove', calcMousePosition);
+      if (!cleanup.current) return;
+      cleanup.current.removeEventListener('mousemove', calcMousePosition);
       calcMousePosition.cancel();
     };
   }, [ref, calcMousePosition]);
