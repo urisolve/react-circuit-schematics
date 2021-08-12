@@ -214,8 +214,8 @@ export const SelectionArea = forwardRef(
       const cleanup = parentRef;
 
       return () => {
-        if (!cleanup) return;
-        cleanup.removeEventListener('mousedown', onMouseDown);
+        if (!cleanup.current) return;
+        cleanup.current.removeEventListener('mousedown', onMouseDown);
       };
     }, [parentRef, onMouseDown]);
 
