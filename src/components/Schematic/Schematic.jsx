@@ -67,7 +67,7 @@ export const Schematic = ({
         return elem;
       });
     },
-    [schematic?.editById, gridSize],
+    [schematic, gridSize],
   );
 
   return (
