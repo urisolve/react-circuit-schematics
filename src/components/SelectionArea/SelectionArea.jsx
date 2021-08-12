@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
   useCallback,
+  useMemo,
 } from 'react';
 import lodash from 'lodash';
 
@@ -16,12 +17,10 @@ export const SelectionArea = forwardRef(
   (
     {
       getRef,
-      parentRef = window,
+      parentRef,
       ignoreItems = [],
       selectableItems = [],
-      selectingItems,
       setSelectingItems,
-      selectedItems,
       setSelectedItems,
       fps = 30,
       style,
@@ -75,7 +74,7 @@ export const SelectionArea = forwardRef(
           height: elemArea.height,
         });
       }
-    }, [getRef, ignoreItems, selectableItems]);
+    }, [getRef, ignoreItems, selectableItems, parentRef]);
 
     /**
      * Handler for pressing left mouse button.
@@ -132,46 +131,47 @@ export const SelectionArea = forwardRef(
 
         event.preventDefault();
       },
-      [setIsDragging, setSelectedItems],
+      [setSelectedItems, disabled, parentRef, onMouseUp, onMouseMove],
     );
 
     /**
      * Handler for moving the mouse.
      */
-    const onMouseMove = useCallback(
-      lodash.throttle((event) => {
-        // Start dragging
-        setIsDragging(true);
+    const onMouseMove = useMemo(
+      () =>
+        lodash.throttle((event) => {
+          // Start dragging
+          setIsDragging(true);
 
-        // Calculate the current position of mouse
-        const endPoint = {
-          left: event.pageX - parentRect.current.left,
-          top: event.pageY - parentRect.current.top,
-        };
+          // Calculate the current position of mouse
+          const endPoint = {
+            left: event.pageX - parentRect.current.left,
+            top: event.pageY - parentRect.current.top,
+          };
 
-        // Calculate the selection area
-        selectionArea.current = {
-          height: Math.abs(endPoint.top - startPoint.current.top),
-          width: Math.abs(endPoint.left - startPoint.current.left),
-          top:
-            endPoint.top - startPoint.current.top > 0
-              ? startPoint.current.top
-              : endPoint.top,
-          left:
-            endPoint.left - startPoint.current.left > 0
-              ? startPoint.current.left
-              : endPoint.left,
-        };
+          // Calculate the selection area
+          selectionArea.current = {
+            height: Math.abs(endPoint.top - startPoint.current.top),
+            width: Math.abs(endPoint.left - startPoint.current.left),
+            top:
+              endPoint.top - startPoint.current.top > 0
+                ? startPoint.current.top
+                : endPoint.top,
+            left:
+              endPoint.left - startPoint.current.left > 0
+                ? startPoint.current.left
+                : endPoint.left,
+          };
 
-        // Calculate which elements are being selected
-        const items = new Set();
-        for (const area of selectableAreas.current)
-          if (areasIntersect(area, selectionArea.current)) items.add(area.id);
-        setSelectingItems(items);
+          // Calculate which elements are being selected
+          const items = new Set();
+          for (const area of selectableAreas.current)
+            if (areasIntersect(area, selectionArea.current)) items.add(area.id);
+          setSelectingItems(items);
 
-        event.preventDefault();
-      }, 1000 / fps),
-      [setSelectingItems, startPoint],
+          event.preventDefault();
+        }, 1000 / fps),
+      [setSelectingItems, startPoint, fps],
     );
 
     /**
@@ -187,13 +187,22 @@ export const SelectionArea = forwardRef(
           return new Set();
         });
 
+        // Cancel throttled function calls
+        onMouseMove.cancel();
+
         // Remove event listeners while not being used
         parentRef.current.removeEventListener('mousemove', onMouseMove);
         parentRef.current.removeEventListener('mouseup', onMouseUp);
 
         event.preventDefault();
       },
-      [setIsDragging, setSelectedItems, setSelectingItems],
+      [
+        setIsDragging,
+        setSelectedItems,
+        setSelectingItems,
+        onMouseMove,
+        parentRef,
+      ],
     );
 
     /**
@@ -202,12 +211,13 @@ export const SelectionArea = forwardRef(
     useEffect(() => {
       if (!parentRef.current) return;
       parentRef.current.addEventListener('mousedown', onMouseDown);
+      const cleanup = parentRef;
 
       return () => {
-        if (!parentRef.current) return;
-        parentRef.current.removeEventListener('mousedown', onMouseDown);
+        if (!cleanup) return;
+        cleanup.removeEventListener('mousedown', onMouseDown);
       };
-    }, []);
+    }, [parentRef, onMouseDown]);
 
     return (
       <div

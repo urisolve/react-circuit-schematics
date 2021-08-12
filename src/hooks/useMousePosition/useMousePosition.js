@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useMemo, useEffect, useRef, useState } from 'react';
 import lodash from 'lodash';
 
 export const useMousePosition = (ref, fps = 30) => {
@@ -10,13 +10,14 @@ export const useMousePosition = (ref, fps = 30) => {
     area.current = ref.current.getBoundingClientRect();
   }, [ref, area]);
 
-  const calcMousePosition = useCallback(
-    lodash.throttle((event) => {
-      setMousePosition({
-        x: Math.floor(event.pageX - area.current.left),
-        y: Math.floor(event.pageY - area.current.top),
-      });
-    }, 1000 / fps),
+  const calcMousePosition = useMemo(
+    () =>
+      lodash.throttle((event) => {
+        setMousePosition({
+          x: Math.floor(event.pageX - area.current.left),
+          y: Math.floor(event.pageY - area.current.top),
+        });
+      }, 1000 / fps),
     [setMousePosition, fps, area],
   );
 
@@ -28,6 +29,7 @@ export const useMousePosition = (ref, fps = 30) => {
     return () => {
       if (!temp.current) return;
       temp.current.removeEventListener('mousemove', calcMousePosition);
+      calcMousePosition.cancel();
     };
   }, [ref, calcMousePosition]);
 

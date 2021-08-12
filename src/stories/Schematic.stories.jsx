@@ -64,7 +64,7 @@ export const BuildCircuit = () => {
 
   // Initialization of the generator
   const randomPos = randomPosGenerator(0, width - 100, 0, height - 100);
-  const genRandomPos = () => randomPos.next().value;
+  const genRandomPos = useCallback(() => randomPos.next().value, [randomPos]);
 
   const addResistor = useCallback(() => {
     schematic.add({
@@ -75,11 +75,11 @@ export const BuildCircuit = () => {
         { id: uuidv4(), position: { x: 1, y: 0.5 } },
       ],
     });
-  }, [schematic.add]);
+  }, [schematic, genRandomPos]);
 
   const addNode = useCallback(() => {
     schematic.add({ position: genRandomPos() });
-  }, [schematic.add]);
+  }, [schematic, genRandomPos]);
 
   const addConnection = useCallback(() => {
     const node1 = { id: uuidv4(), position: genRandomPos() };
@@ -87,7 +87,7 @@ export const BuildCircuit = () => {
     const connection = { start: node1.id, end: node2.id };
 
     schematic.add([node1, node2, connection]);
-  }, [schematic.add]);
+  }, [schematic, genRandomPos]);
 
   return (
     <>

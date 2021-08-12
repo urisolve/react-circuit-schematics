@@ -30,9 +30,9 @@ export const CustomLabel = () => (
     as={({ name, value, unit }) => (
       <>
         <p>
-          Hi, I'm a custom label
+          Hi, I&apos;m a custom label
           <br />
-          My name is <b>{name}</b> and I'm worth{' '}
+          My name is <b>{name}</b> and I&apos;m worth{' '}
           <b>
             {value} {unit}
           </b>

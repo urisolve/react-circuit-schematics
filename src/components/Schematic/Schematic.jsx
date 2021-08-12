@@ -97,9 +97,7 @@ export const Schematic = ({
         parentRef={canvasRef}
         ignoreItems={schematic.labels}
         selectableItems={schematic.items}
-        selectingItems={selectingItems}
         setSelectingItems={setSelectingItems}
-        selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
         disabled={readOnly}
       />
@@ -115,6 +113,7 @@ export const Schematic = ({
             updatePosition={updatePosition}
             onDrag={reRender}
             isSelected={selectedItems.has(comp.id)}
+            isSelecting={selectingItems.has(comp.id)}
             disabled={readOnly}
           />
         );
@@ -129,6 +128,7 @@ export const Schematic = ({
           updatePosition={updatePosition}
           onDrag={reRender}
           isSelected={selectedItems.has(node.id)}
+          isSelecting={selectingItems.has(node.id)}
           disabled={readOnly}
         />
       ))}
@@ -146,6 +146,7 @@ export const Schematic = ({
               gridSize={gridSize}
               updatePosition={updatePosition}
               isSelected={selectedItems.has(conn.id)}
+              isSelecting={selectingItems.has(conn.id)}
               disabled={readOnly}
             />
           ),

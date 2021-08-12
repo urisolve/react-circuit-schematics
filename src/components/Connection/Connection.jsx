@@ -1,25 +1,35 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useMemo } from 'react';
 import XArrow from 'react-xarrows';
 import PropTypes from 'prop-types';
 
 export const Connection = forwardRef(
   (
     {
-      id,
       start,
       end,
-      label,
       type,
       properties,
-      gridSize,
       gridBreak,
       onClick,
-      updatePosition,
       isSelected,
+      isSelecting,
       ...rest
     },
     ref,
   ) => {
+    const selectionStyle = useMemo(() => {
+      const selectionColor = '#888';
+      const blurAmount = 0;
+      const displacement = { x: 3, y: 2 };
+
+      const dropShadow = `drop-shadow(${displacement.x}px ${displacement.y}px ${blurAmount}px ${selectionColor})`;
+
+      return {
+        filter: (isSelected || isSelecting) && dropShadow,
+        WebkitFilter: (isSelected || isSelecting) && dropShadow,
+      };
+    }, [isSelected, isSelecting]);
+
     return (
       <XArrow
         start={start}
@@ -33,12 +43,8 @@ export const Connection = forwardRef(
           zIndex: -1,
           opacity: properties.opacity ?? 1,
         }}
-        // Selection
-        SVGcanvasStyle={{
-          filter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
-          WebkitFilter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
-        }}
-        divContainerProps={{ ref }} // ! Temporary fix
+        SVGcanvasStyle={selectionStyle}
+        divContainerProps={{ ref }} // ! Temporary "fix"
         // SVGcanvasProps={{ ref }}
         // arrowBodyProps={{ ref }}
         passProps={{ onClick }}
@@ -47,6 +53,8 @@ export const Connection = forwardRef(
     );
   },
 );
+
+Connection.displayName = 'Connection';
 
 Connection.propTypes = {
   /**

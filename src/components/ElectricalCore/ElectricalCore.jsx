@@ -21,10 +21,9 @@ export const ElectricalCore = forwardRef(
       gridSize,
       altImageIdx,
       imgPath,
-      handlePortClick,
       updatePosition,
-      onClick,
       isSelected,
+      isSelecting,
       ...rest
     },
     ref,
@@ -46,7 +45,7 @@ export const ElectricalCore = forwardRef(
       // Otherwise, grab the correct SVG
       const src = svgMap.get(type);
       return Array.isArray(src) ? src[altImageIdx ?? 0] : src;
-    }, [altImageIdx]);
+    }, [altImageIdx, imgPath, type]);
 
     /**
      * Calculate the style that controls the rotation of the image
@@ -59,6 +58,19 @@ export const ElectricalCore = forwardRef(
         msTransform: rotationString,
       };
     }, [position.angle]);
+
+    const selectionStyle = useMemo(() => {
+      const selectionColor = '#888';
+      const blurAmount = 0;
+      const displacement = { x: 3, y: 2 };
+
+      const dropShadow = `drop-shadow(${displacement.x}px ${displacement.y}px ${blurAmount}px ${selectionColor})`;
+
+      return {
+        filter: (isSelected || isSelecting) && dropShadow,
+        WebkitFilter: (isSelected || isSelecting) && dropShadow,
+      };
+    }, [isSelected, isSelecting]);
 
     return (
       <Draggable
@@ -77,14 +89,9 @@ export const ElectricalCore = forwardRef(
               width: width,
               height: height,
               ...rotationStyle,
-
-              // Selection
-              filter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
-              WebkitFilter:
-                isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
+              ...selectionStyle,
             }}
             className={cx(styles.noDrag, 'component-handle')}
-            onClick={onClick}
             ref={ref}
             src={src}
             alt={type}
@@ -96,7 +103,6 @@ export const ElectricalCore = forwardRef(
                 key={port.id}
                 ref={getRef(port.id)}
                 bounds={{ width, height }}
-                onClick={() => handlePortClick?.(port.id)}
                 rotation={position?.angle}
                 {...rest}
                 {...port}
@@ -108,6 +114,8 @@ export const ElectricalCore = forwardRef(
     );
   },
 );
+
+ElectricalCore.displayName = 'ElectricalCore';
 
 ElectricalCore.propTypes = {
   /**

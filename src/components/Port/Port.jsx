@@ -32,6 +32,8 @@ export const Port = forwardRef(
   },
 );
 
+Port.displayName = 'Port';
+
 Port.propTypes = {
   /**
    * The relative position of the Port. Range between `0` and `1`

@@ -7,14 +7,14 @@ import styles from './Label.module.css';
 import { DefaultLabel } from './DefaultLabel';
 
 export const Label = forwardRef(
-  ({ as, id, owner, position, gridSize, updatePosition, ...rest }, ref) => {
+  ({ as, owner, position, gridSize, updatePosition, ...rest }, ref) => {
     return (
       <Draggable
         bounds='.schematic'
         position={position}
         nodeRef={ref}
         grid={[gridSize, gridSize]}
-        onStop={(e, position) => updatePosition?.(owner, position, true)}
+        onStop={(_e, position) => updatePosition?.(owner, position, true)}
         {...rest}
       >
         <div className={cx(styles.wrapper, styles.unselectable)} ref={ref}>
@@ -24,6 +24,8 @@ export const Label = forwardRef(
     );
   },
 );
+
+Label.displayName = 'Label';
 
 Label.propTypes = {
   /**
