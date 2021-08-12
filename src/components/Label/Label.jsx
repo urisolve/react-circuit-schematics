@@ -14,7 +14,7 @@ export const Label = forwardRef(
         position={position}
         nodeRef={ref}
         grid={[gridSize, gridSize]}
-        onStop={(e, position) => updatePosition(owner, position, true)}
+        onStop={(e, position) => updatePosition?.(owner, position, true)}
         {...rest}
       >
         <div className={cx(styles.wrapper, styles.unselectable)} ref={ref}>

@@ -68,7 +68,7 @@ export const ElectricalCore = forwardRef(
         position={position}
         positionOffset={{ x: 5, y: 5 }}
         grid={[gridSize, gridSize]}
-        onStop={(e, position) => updatePosition(id, position)}
+        onStop={(e, position) => updatePosition?.(id, position)}
         {...rest}
       >
         <div className={styles.wrapper} ref={draggableRef}>

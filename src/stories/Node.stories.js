@@ -17,14 +17,4 @@ export default {
   },
 };
 
-export const Simple = () => (
-  <div style={{ position: 'relative' }}>
-    <Node />
-  </div>
-);
-
-export const Labeled = () => (
-  <div style={{ position: 'relative' }}>
-    <Node label={{ name: "I'm a node", position: { x: 20, y: -6 } }} />
-  </div>
-);
+export const Simple = () => <Node />;

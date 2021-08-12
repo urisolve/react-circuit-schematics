@@ -19,7 +19,7 @@ export const Node = forwardRef(
         position={position}
         nodeRef={draggableRef}
         grid={[gridSize, gridSize]}
-        onStop={(e, position) => updatePosition(id, position)}
+        onStop={(e, position) => updatePosition?.(id, position)}
         {...rest}
       >
         <div
@@ -65,10 +65,6 @@ Node.propTypes = {
    * The size of the grid, i.e., the amount of pixels the drag skips
    */
   gridSize: PropTypes.number,
-  /**
-   * The handler that updates the position of the Node on drag
-   */
-  onDragStop: PropTypes.func,
 };
 
 Node.defaultProps = {
