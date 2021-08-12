@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import lodash from 'lodash';
 
 import { Schematic } from '../components/Schematic';
 import { useSchematic } from '../hooks/useSchematic';
@@ -51,7 +52,7 @@ export const UndoAndRedo = () => {
   );
 };
 
-export const BuildResistorCircuit = () => {
+export const BuildCircuit = () => {
   const [width, height] = [800, 500];
   const { schematic, selection } = useSchematic();
 
@@ -73,8 +74,16 @@ export const BuildResistorCircuit = () => {
 
   // Adds a resistor at a random location
   const addResistor = useCallback(() => {
+    const type = lodash.sample([
+      'Resistor',
+      'Capacitor',
+      'Inductor',
+      'Voltmeter',
+      'Ammeter',
+    ]);
+
     schematic.add({
-      type: 'Resistor',
+      type,
       position: genRandomPos(),
       ports: [
         { id: uuidv4(), position: { x: 0, y: 0.5 } },
