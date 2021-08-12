@@ -30,7 +30,7 @@ export const ReadOnly = () => {
 };
 
 export const UndoAndRedo = () => {
-  const { schematic, history } = useSchematic(RLC_Circuit);
+  const { schematic, selection, history } = useSchematic(RLC_Circuit);
 
   return (
     <>
@@ -41,14 +41,19 @@ export const UndoAndRedo = () => {
         Redo
       </button>
 
-      <Schematic schematic={schematic} width={800} height={500} />
+      <Schematic
+        schematic={schematic}
+        selection={selection}
+        width={800}
+        height={500}
+      />
     </>
   );
 };
 
 export const BuildCircuit = () => {
   const [width, height] = [800, 500];
-  const { schematic } = useSchematic();
+  const { schematic, selection } = useSchematic();
 
   // Generator function for random positions
   function* randomPosGenerator(minX, maxX, minY, maxY) {
@@ -89,13 +94,29 @@ export const BuildCircuit = () => {
     schematic.add([node1, node2, connection]);
   }, [schematic, genRandomPos]);
 
+  const deleteSelection = useCallback(() => {
+    schematic.deleteById([...selection.selectedItems]);
+  }, [schematic, selection.selectedItems]);
+
   return (
     <>
       <button onClick={addResistor}>Add Component</button>
       <button onClick={addNode}>Add Node</button>
       <button onClick={addConnection}>Add Connection</button>
+      <br />
+      <button
+        onClick={deleteSelection}
+        disabled={!selection.selectedItems.size}
+      >
+        Delete
+      </button>
 
-      <Schematic schematic={schematic} width={800} height={500} />
+      <Schematic
+        schematic={schematic}
+        selection={selection}
+        width={800}
+        height={500}
+      />
     </>
   );
 };

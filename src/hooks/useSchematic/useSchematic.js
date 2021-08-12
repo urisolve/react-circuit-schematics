@@ -29,6 +29,10 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
 
   const [getRef] = useDynamicRefs();
   const [schematic, setSchematic] = useState(initialSchematic);
+
+  // Extra logic
+  const [selectingItems, setSelectingItems] = useState(new Set());
+  const [selectedItems, setSelectedItems] = useState(new Set());
   const history = useHistory(setSchematic, options.maxHistoryLength);
 
   /**
@@ -207,16 +211,20 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
    * @param {String} id The id of the element to be deleted.
    */
   const deleteById = useCallback(
-    (id) => {
+    (ids) => {
       setSchematic((oldSchematic) => {
         // Make a clone of the current schematic
         const newSchematic = lodash.cloneDeep(oldSchematic);
 
-        // Delete the element
-        for (const type in newSchematic)
-          newSchematic[type] = newSchematic[type].filter(
-            (elem) => elem.id !== id,
-          );
+        // Force element into array format
+        if (!(ids instanceof Array)) ids = [ids];
+
+        // Delete each of the corresponding elements
+        for (const id of ids)
+          for (const type in newSchematic)
+            newSchematic[type] = newSchematic[type].filter(
+              (elem) => elem.id !== id,
+            );
 
         // TODO: Make the connections stay in the same place
         console.error('Make the connections stay in the same place');
@@ -283,6 +291,13 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
       add,
       deleteById,
       editById,
+    },
+
+    selection: {
+      selectingItems,
+      selectedItems,
+      setSelectingItems,
+      setSelectedItems,
     },
 
     history,

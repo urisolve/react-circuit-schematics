@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useRef,
-  useState,
-  useEffect,
-  useReducer,
-} from 'react';
+import React, { useCallback, useRef, useEffect, useReducer } from 'react';
 import useDynamicRefs from 'use-dynamic-refs';
 import PropTypes from 'prop-types';
 
@@ -19,6 +13,7 @@ import { useMousePosition } from '../../hooks/useMousePosition';
 
 export const Schematic = ({
   schematic,
+  selection,
   width,
   height,
   readOnly,
@@ -31,9 +26,6 @@ export const Schematic = ({
   const [getRef, setRef] = useDynamicRefs();
   const canvasRef = useRef();
   const mousePosition = useMousePosition(canvasRef);
-
-  const [selectingItems, setSelectingItems] = useState(new Set());
-  const [selectedItems, setSelectedItems] = useState(new Set());
 
   // Work-around for react-xarrows updating the connection.
   const [, reRender] = useReducer(() => ({}), {});
@@ -97,8 +89,8 @@ export const Schematic = ({
         parentRef={canvasRef}
         ignoreItems={schematic.labels}
         selectableItems={schematic.items}
-        setSelectingItems={setSelectingItems}
-        setSelectedItems={setSelectedItems}
+        setSelectingItems={selection?.setSelectingItems}
+        setSelectedItems={selection?.setSelectedItems}
         disabled={readOnly}
       />
 
@@ -112,8 +104,8 @@ export const Schematic = ({
             gridSize={gridSize}
             updatePosition={updatePosition}
             onDrag={reRender}
-            isSelected={selectedItems.has(comp.id)}
-            isSelecting={selectingItems.has(comp.id)}
+            isSelected={selection?.selectedItems.has(comp.id)}
+            isSelecting={selection?.selectingItems.has(comp.id)}
             disabled={readOnly}
           />
         );
@@ -127,8 +119,8 @@ export const Schematic = ({
           gridSize={gridSize}
           updatePosition={updatePosition}
           onDrag={reRender}
-          isSelected={selectedItems.has(node.id)}
-          isSelecting={selectingItems.has(node.id)}
+          isSelected={selection?.selectedItems.has(node.id)}
+          isSelecting={selection?.selectingItems.has(node.id)}
           disabled={readOnly}
         />
       ))}
@@ -143,10 +135,8 @@ export const Schematic = ({
               ref={setRef(conn.id)}
               start={getRef(conn.start)}
               end={getRef(conn.end)}
-              gridSize={gridSize}
-              updatePosition={updatePosition}
-              isSelected={selectedItems.has(conn.id)}
-              isSelecting={selectingItems.has(conn.id)}
+              isSelected={selection?.selectedItems.has(conn.id)}
+              isSelecting={selection?.selectingItems.has(conn.id)}
               disabled={readOnly}
             />
           ),

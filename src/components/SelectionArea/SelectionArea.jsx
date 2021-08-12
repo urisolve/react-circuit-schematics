@@ -102,12 +102,12 @@ export const SelectionArea = forwardRef(
         for (const area of selectableAreas.current) {
           if (areasIntersect(clickPoint, area)) {
             if (event.ctrlKey)
-              setSelectedItems((items) => {
+              setSelectedItems?.((items) => {
                 if (items.has(area.id)) items.delete(area.id);
                 else items.add(area.id);
                 return items;
               });
-            else setSelectedItems(new Set([area.id]));
+            else setSelectedItems?.(new Set([area.id]));
 
             event.preventDefault();
             return;
@@ -123,7 +123,7 @@ export const SelectionArea = forwardRef(
         };
 
         // Unselect the selected items
-        setSelectedItems(new Set());
+        setSelectedItems?.(new Set());
 
         // Enable event listeners for drag
         parentRef.current.addEventListener('mousemove', onMouseMove);
@@ -167,7 +167,7 @@ export const SelectionArea = forwardRef(
           const items = new Set();
           for (const area of selectableAreas.current)
             if (areasIntersect(area, selectionArea.current)) items.add(area.id);
-          setSelectingItems(items);
+          setSelectingItems?.(items);
 
           event.preventDefault();
         }, 1000 / fps),
@@ -182,8 +182,8 @@ export const SelectionArea = forwardRef(
         setIsDragging(false);
 
         // Apply the selection
-        setSelectingItems((items) => {
-          setSelectedItems(new Set([...items]));
+        setSelectingItems?.((items) => {
+          setSelectedItems?.(new Set([...items]));
           return new Set();
         });
 
