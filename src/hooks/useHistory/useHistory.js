@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback } from 'react';
 
 /**
  * A React Hook that aids with tracking the history of a state.
@@ -8,7 +8,7 @@ import { useState, useMemo, useCallback } from 'react'
  * @returns {Object} Properties and methods that control the history.
  */
 export const useHistory = (setter, maxLength) => {
-  const [history, setHistory] = useState({ undoStack: [], redoStack: [] })
+  const [history, setHistory] = useState({ undoStack: [], redoStack: [] });
 
   /**
    * Saves a state to the history.
@@ -21,11 +21,11 @@ export const useHistory = (setter, maxLength) => {
   const save = useCallback(
     (change) =>
       setHistory((hist) => {
-        if (hist.undoStack.push(change) > maxLength) hist.undoStack.shift()
-        return hist
+        if (hist.undoStack.push(change) > maxLength) hist.undoStack.shift();
+        return hist;
       }),
-    [setHistory]
-  )
+    [setHistory],
+  );
 
   /**
    * Updater of the history state.
@@ -39,32 +39,32 @@ export const useHistory = (setter, maxLength) => {
   const updateHistory = useCallback(
     (isUndo) => {
       setter((prev) => {
-        let curr = prev
+        let curr = prev;
 
         setHistory((hist) => {
-          const saveStack = isUndo ? hist.redoStack : hist.undoStack
-          const getStack = isUndo ? hist.undoStack : hist.redoStack
+          const saveStack = isUndo ? hist.redoStack : hist.undoStack;
+          const getStack = isUndo ? hist.undoStack : hist.redoStack;
 
           if (getStack.length) {
-            if (saveStack.push(prev) > maxLength) saveStack.shift()
-            curr = getStack.pop()
+            if (saveStack.push(prev) > maxLength) saveStack.shift();
+            curr = getStack.pop();
           }
 
-          return hist
-        })
+          return hist;
+        });
 
-        return curr
-      })
+        return curr;
+      });
     },
-    [setter, setHistory]
-  )
+    [setter, setHistory],
+  );
 
   /**
    * Aliases of the updateHistory function.
    * Made to simplify the API of the hook.
    */
-  const undo = useCallback(() => updateHistory(true), [updateHistory])
-  const redo = useCallback(() => updateHistory(false), [updateHistory])
+  const undo = useCallback(() => updateHistory(true), [updateHistory]);
+  const redo = useCallback(() => updateHistory(false), [updateHistory]);
 
   /**
    * Aliases of the length of the undo and redo stacks.
@@ -72,15 +72,15 @@ export const useHistory = (setter, maxLength) => {
    */
   const canUndo = useMemo(
     () => !!history.undoStack.length,
-    [history.undoStack.length]
-  )
+    [history.undoStack.length],
+  );
   const canRedo = useMemo(
     () => !!history.redoStack.length,
-    [history.undoStack.length]
-  )
+    [history.undoStack.length],
+  );
 
   /**
    * Return the relevant data to the user.
    */
-  return { save, undo, redo, canUndo, canRedo }
-}
+  return { save, undo, redo, canUndo, canRedo };
+};

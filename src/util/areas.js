@@ -11,4 +11,4 @@ export const areasIntersect = (a, b) =>
   a.left < b.left + (b.width ?? 0) &&
   a.left + (a.width ?? 0) > b.left &&
   a.top < b.top + (b.height ?? 0) &&
-  a.top + (a.height ?? 0) > b.top
+  a.top + (a.height ?? 0) > b.top;

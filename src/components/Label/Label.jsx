@@ -1,10 +1,10 @@
-import React, { forwardRef } from 'react'
-import PropTypes from 'prop-types'
-import Draggable from 'react-draggable'
-import cx from 'classnames'
+import React, { createElement, forwardRef } from 'react';
+import PropTypes from 'prop-types';
+import Draggable from 'react-draggable';
+import cx from 'classnames';
 
-import styles from './Label.module.css'
-import { DefaultLabel } from './DefaultLabel'
+import styles from './Label.module.css';
+import { DefaultLabel } from './DefaultLabel';
 
 export const Label = forwardRef(
   ({ as, id, owner, position, gridSize, updatePosition, ...rest }, ref) => {
@@ -18,12 +18,12 @@ export const Label = forwardRef(
         {...rest}
       >
         <div className={cx(styles.wrapper, styles.unselectable)} ref={ref}>
-          {as ? React.createElement(as, rest) : <DefaultLabel {...rest} />}
+          {as ? createElement(as, rest) : <DefaultLabel {...rest} />}
         </div>
       </Draggable>
-    )
-  }
-)
+    );
+  },
+);
 
 Label.propTypes = {
   /**
@@ -66,15 +66,15 @@ Label.propTypes = {
    */
   position: PropTypes.shape({
     x: PropTypes.number,
-    y: PropTypes.number
+    y: PropTypes.number,
   }),
   /**
    * The size of the grid, i.e., the amount of pixels the drag skips.
    */
-  gridSize: PropTypes.number
-}
+  gridSize: PropTypes.number,
+};
 
 Label.defaultProps = {
   position: { x: 0, y: 0 },
-  gridSize: 10
-}
+  gridSize: 10,
+};

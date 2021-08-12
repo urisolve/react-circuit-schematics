@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react'
-import XArrow from 'react-xarrows'
-import PropTypes from 'prop-types'
+import React, { forwardRef } from 'react';
+import XArrow from 'react-xarrows';
+import PropTypes from 'prop-types';
 
 export const Connection = forwardRef(
   (
@@ -18,7 +18,7 @@ export const Connection = forwardRef(
       isSelected,
       ...rest
     },
-    ref
+    ref,
   ) => {
     return (
       <XArrow
@@ -31,12 +31,12 @@ export const Connection = forwardRef(
         endAnchor='middle'
         divContainerStyle={{
           zIndex: -1,
-          opacity: properties.opacity ?? 1
+          opacity: properties.opacity ?? 1,
         }}
         // Selection
         SVGcanvasStyle={{
           filter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
-          WebkitFilter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`
+          WebkitFilter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
         }}
         divContainerProps={{ ref }} // ! Temporary fix
         // SVGcanvasProps={{ ref }}
@@ -44,9 +44,9 @@ export const Connection = forwardRef(
         passProps={{ onClick }}
         {...rest}
       />
-    )
-  }
-)
+    );
+  },
+);
 
 Connection.propTypes = {
   /**
@@ -58,14 +58,14 @@ Connection.propTypes = {
    */
   start: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.shape({ current: PropTypes.elementType })
+    PropTypes.shape({ current: PropTypes.elementType }),
   ]).isRequired,
   /**
    * A `ref` to the component where the connection ends
    */
   end: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.shape({ current: PropTypes.elementType })
+    PropTypes.shape({ current: PropTypes.elementType }),
   ]).isRequired,
   /**
    * The type of path the connection takes
@@ -79,9 +79,9 @@ Connection.propTypes = {
     stroke: PropTypes.number,
     decoration: PropTypes.shape({
       start: PropTypes.string,
-      end: PropTypes.string
+      end: PropTypes.string,
     }),
-    opacity: PropTypes.number
+    opacity: PropTypes.number,
   }),
   /**
    * The size of the grid the Label should move in
@@ -94,8 +94,8 @@ Connection.propTypes = {
   /**
    * The callback to execute when clicking on the connection
    */
-  onClick: PropTypes.func
-}
+  onClick: PropTypes.func,
+};
 
 Connection.defaultProps = {
   type: 'grid',
@@ -103,7 +103,7 @@ Connection.defaultProps = {
     color: '',
     stroke: 2,
     decoration: {},
-    opacity: 1
+    opacity: 1,
   },
-  gridBreak: 1
-}
+  gridBreak: 1,
+};

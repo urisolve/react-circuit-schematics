@@ -1,7 +1,7 @@
-import { useState, useCallback, useMemo, useEffect } from 'react'
-import { v4 as uuidv4 } from 'uuid'
-import useDynamicRefs from 'use-dynamic-refs'
-import lodash from 'lodash'
+import { useState, useCallback, useMemo, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import useDynamicRefs from 'use-dynamic-refs';
+import lodash from 'lodash';
 
 import {
   hasLabel,
@@ -9,12 +9,12 @@ import {
   isConnection,
   isPort,
   rotateCoords,
-  snapPosToGrid
-} from '../../util'
-import { useHistory } from '../useHistory'
+  snapPosToGrid,
+} from '../../util';
+import { useHistory } from '../useHistory';
 
-const emptySchematic = { components: [], nodes: [], connections: [] }
-const defaultOptions = { maxHistoryLength: 10, gridSize: 10 }
+const emptySchematic = { components: [], nodes: [], connections: [] };
+const defaultOptions = { maxHistoryLength: 10, gridSize: 10 };
 
 /**
  * A React Hook that takes care of the logic required to run a schematic.
@@ -24,12 +24,12 @@ const defaultOptions = { maxHistoryLength: 10, gridSize: 10 }
  * @returns {Object} Properties and methods that control the schematic.
  */
 export const useSchematic = (initialSchematic = {}, options = {}) => {
-  initialSchematic = { ...emptySchematic, ...initialSchematic }
-  options = { ...defaultOptions, ...options }
+  initialSchematic = { ...emptySchematic, ...initialSchematic };
+  options = { ...defaultOptions, ...options };
 
-  const [getRef] = useDynamicRefs()
-  const [schematic, setSchematic] = useState(initialSchematic)
-  const history = useHistory(setSchematic, options.maxHistoryLength)
+  const [getRef] = useDynamicRefs();
+  const [schematic, setSchematic] = useState(initialSchematic);
+  const history = useHistory(setSchematic, options.maxHistoryLength);
 
   /**
    * Calculate each Node and Port's connections.
@@ -38,26 +38,26 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
     setSchematic((schematic) => {
       // Calculate all node connections and type
       for (const node of schematic.nodes) {
-        node.connections = []
+        node.connections = [];
         for (const conn of schematic.connections)
           if (conn.start === node.id || conn.end === node.id)
-            node.connections.push(conn.id)
-        node.type = node.connections.length > 2 ? 'real' : 'virtual'
+            node.connections.push(conn.id);
+        node.type = node.connections.length > 2 ? 'real' : 'virtual';
       }
 
       // Calculate all port connections
       for (const component of schematic.components) {
         for (const port of component.ports) {
-          port.connection = null
+          port.connection = null;
           for (const conn of schematic.connections)
             if (conn.start === port.id || conn.end === port.id)
-              port.connection = conn.id
+              port.connection = conn.id;
         }
       }
 
-      return schematic
-    })
-  }, [setSchematic, schematic])
+      return schematic;
+    });
+  }, [setSchematic, schematic]);
 
   /**
    * Array of all the schematic's items.
@@ -66,10 +66,10 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
     () => [
       ...schematic.components,
       ...schematic.nodes,
-      ...schematic.connections
+      ...schematic.connections,
     ],
-    [schematic]
-  )
+    [schematic],
+  );
 
   /**
    * Array of all the schematic's labels.
@@ -80,11 +80,11 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
         items.map((item) =>
           hasLabel(item)
             ? { ...item.label, id: uuidv4(), owner: item.id }
-            : null
-        )
+            : null,
+        ),
       ),
-    [schematic]
-  )
+    [schematic],
+  );
 
   /**
    * Take care of connections
@@ -92,63 +92,66 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
   useEffect(() => {
     setSchematic((schematic) => {
       // Map of (position string) -> (element id)
-      const seenPositions = new Map()
+      const seenPositions = new Map();
 
       // Build hash map of all ports positions
       for (const component of schematic.components) {
         for (const port of component.ports) {
           // Calculate component's width and height
-          const compRef = getRef(component.id).current
-          const { width, height } = compRef.getBoundingClientRect()
+          const compRef = getRef(component.id).current;
+          const { width, height } = compRef.getBoundingClientRect();
 
           // Calculate port's real position
           const rotatedCoords = rotateCoords(
             port.position,
-            component.position.angle
-          )
+            component.position.angle,
+          );
           const realPos = {
             x: component.position.x + rotatedCoords.x * width,
-            y: component.position.y + rotatedCoords.y * height
-          }
+            y: component.position.y + rotatedCoords.y * height,
+          };
 
           // Add it to the hash map
-          const positionString = JSON.stringify(realPos)
-          seenPositions.set(positionString, port.id)
+          const positionString = JSON.stringify(realPos);
+          seenPositions.set(positionString, port.id);
         }
       }
 
       // Check if nodes overlay ports or other nodes
       for (const node of schematic.nodes) {
-        const positionString = JSON.stringify(node.position)
+        const positionString = JSON.stringify(node.position);
 
         // If the node doesn't overlay any of the already seen ones,
         if (seenPositions.has(positionString)) {
           // Calculate what is being overlaid
-          const pattern = { id: seenPositions.get(positionString) }
+          const pattern = { id: seenPositions.get(positionString) };
           const overlaidElem =
             lodash.find(items, pattern) ??
-            lodash.find(lodash.find(items, { ports: [pattern] }).ports, pattern)
+            lodash.find(
+              lodash.find(items, { ports: [pattern] }).ports,
+              pattern,
+            );
 
           // If the port is already connected, do nothing
-          if (isPort(overlaidElem) && overlaidElem.connection) return schematic
+          if (isPort(overlaidElem) && overlaidElem.connection) return schematic;
 
           // Move connections from that node to the overlaid element
           for (const conn of schematic.connections) {
-            if (conn.start === node.id) conn.start = overlaidElem.id
-            if (conn.end === node.id) conn.end = overlaidElem.id
+            if (conn.start === node.id) conn.start = overlaidElem.id;
+            if (conn.end === node.id) conn.end = overlaidElem.id;
           }
 
           // Delete the useless node
-          schematic.nodes = schematic.nodes.filter((n) => n.id !== node.id)
+          schematic.nodes = schematic.nodes.filter((n) => n.id !== node.id);
         }
 
         // Mark position as seen
-        else seenPositions.set(positionString, node.id)
+        else seenPositions.set(positionString, node.id);
       }
 
-      return schematic
-    })
-  }, [setSchematic, schematic, items])
+      return schematic;
+    });
+  }, [setSchematic, schematic, items]);
 
   /**
    * Adds an element to the schematic.
@@ -162,34 +165,37 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
     (elements) => {
       setSchematic((oldSchematic) => {
         // Make a clone of the current schematic
-        const newSchematic = lodash.cloneDeep(oldSchematic)
+        const newSchematic = lodash.cloneDeep(oldSchematic);
 
         // Force element into array format
-        if (!(elements instanceof Array)) elements = [elements]
+        if (!(elements instanceof Array)) elements = [elements];
 
         // Add all of the given elements to the schematic
         for (const element of elements) {
           // Lock the element's position to the grid
           if (!isConnection(element)) {
-            element.position = snapPosToGrid(element.position, options.gridSize)
+            element.position = snapPosToGrid(
+              element.position,
+              options.gridSize,
+            );
           }
 
           // Add the new element to the schematic
-          let where = 'nodes'
-          if (isComponent(element)) where = 'components'
-          else if (isConnection(element)) where = 'connections'
-          newSchematic[where].push({ id: uuidv4(), ...element })
+          let where = 'nodes';
+          if (isComponent(element)) where = 'components';
+          else if (isConnection(element)) where = 'connections';
+          newSchematic[where].push({ id: uuidv4(), ...element });
         }
 
         // If the changes are valid, save the old schematic
         if (!lodash.isEqual(oldSchematic, newSchematic))
-          history.save(oldSchematic)
+          history.save(oldSchematic);
 
-        return newSchematic
-      })
+        return newSchematic;
+      });
     },
-    [setSchematic]
-  )
+    [setSchematic],
+  );
 
   /**
    * Deletes an element from the schematic.
@@ -204,26 +210,26 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
     (id) => {
       useSchematic((oldSchematic) => {
         // Make a clone of the current schematic
-        const newSchematic = lodash.cloneDeep(oldSchematic)
+        const newSchematic = lodash.cloneDeep(oldSchematic);
 
         // Delete the element
         for (const type in newSchematic)
           newSchematic[type] = newSchematic[type].filter(
-            (elem) => elem.id !== id
-          )
+            (elem) => elem.id !== id,
+          );
 
         // TODO: Make the connections stay in the same place
-        console.error('Make the connections stay in the same place')
+        console.error('Make the connections stay in the same place');
 
         // If the changes are valid, save the old schematic
         if (!lodash.isEqual(oldSchematic, newSchematic))
-          history.save(oldSchematic)
+          history.save(oldSchematic);
 
-        return newSchematic
-      })
+        return newSchematic;
+      });
     },
-    [setSchematic]
-  )
+    [setSchematic],
+  );
 
   /**
    * Applies certain edits to the specified element.
@@ -243,27 +249,27 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
     (id, edits, saveChanges = true) => {
       setSchematic((oldSchematic) => {
         // Make a clone of the current schematic
-        const newSchematic = lodash.cloneDeep(oldSchematic)
+        const newSchematic = lodash.cloneDeep(oldSchematic);
 
         // Apply the edits
         for (const type in newSchematic) {
           newSchematic[type] = newSchematic[type].map((elem) => {
-            if (elem.id !== id) return elem
+            if (elem.id !== id) return elem;
             return lodash.isFunction(edits)
               ? edits(elem)
-              : { ...elem, ...edits }
-          })
+              : { ...elem, ...edits };
+          });
         }
 
         // If the changes are valid, save the old schematic
         if (saveChanges && !lodash.isEqual(oldSchematic, newSchematic))
-          history.save(oldSchematic)
+          history.save(oldSchematic);
 
-        return newSchematic
-      })
+        return newSchematic;
+      });
     },
-    [setSchematic]
-  )
+    [setSchematic],
+  );
 
   /**
    * Return the relevant data to the user.
@@ -276,9 +282,9 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
 
       add,
       deleteById,
-      editById
+      editById,
     },
 
-    history
-  }
-}
+    history,
+  };
+};

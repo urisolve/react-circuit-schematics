@@ -7,10 +7,10 @@
  * @returns The snapped value.
  */
 export const snapValueToGrid = (value, gridSize) => {
-  const mod = value % gridSize
-  if (mod < gridSize / 2) return value - mod
-  return value + (gridSize - mod)
-}
+  const mod = value % gridSize;
+  if (mod < gridSize / 2) return value - mod;
+  return value + (gridSize - mod);
+};
 
 /**
  * Snaps a position to the grid.
@@ -21,5 +21,5 @@ export const snapValueToGrid = (value, gridSize) => {
  */
 export const snapPosToGrid = (position, gridSize) => ({
   x: snapValueToGrid(position.x ?? 0, gridSize),
-  y: snapValueToGrid(position.y ?? 0, gridSize)
-})
+  y: snapValueToGrid(position.y ?? 0, gridSize),
+});

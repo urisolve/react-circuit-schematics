@@ -1,1 +1,1 @@
-export * from './Schematic'
+export * from './Schematic';

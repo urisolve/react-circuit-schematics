@@ -1,1 +1,1 @@
-export * from './SelectionArea'
+export * from './SelectionArea';

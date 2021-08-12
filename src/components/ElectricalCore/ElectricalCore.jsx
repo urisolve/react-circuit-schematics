@@ -1,13 +1,13 @@
-import React, { useRef, useMemo, forwardRef } from 'react'
-import useDynamicRefs from 'use-dynamic-refs'
-import Draggable from 'react-draggable'
-import PropTypes from 'prop-types'
+import React, { useRef, useMemo, forwardRef } from 'react';
+import useDynamicRefs from 'use-dynamic-refs';
+import Draggable from 'react-draggable';
+import PropTypes from 'prop-types';
 
-import styles from './ElectricalCore.module.css'
-import cx from 'classnames'
+import styles from './ElectricalCore.module.css';
+import cx from 'classnames';
 
-import { svgMap } from '../../../assets'
-import { Port } from '../Port'
+import { svgMap } from '../../../assets';
+import { Port } from '../Port';
 
 export const ElectricalCore = forwardRef(
   (
@@ -27,10 +27,10 @@ export const ElectricalCore = forwardRef(
       isSelected,
       ...rest
     },
-    ref
+    ref,
   ) => {
-    const [getRef] = useDynamicRefs()
-    const draggableRef = useRef()
+    const [getRef] = useDynamicRefs();
+    const draggableRef = useRef();
 
     /**
      * Calculate which SVG to use.
@@ -41,24 +41,24 @@ export const ElectricalCore = forwardRef(
      */
     const src = useMemo(() => {
       // If there is a custom image, use that one
-      if (imgPath) return imgPath
+      if (imgPath) return imgPath;
 
       // Otherwise, grab the correct SVG
-      const src = svgMap.get(type)
-      return Array.isArray(src) ? src[altImageIdx ?? 0] : src
-    }, [altImageIdx])
+      const src = svgMap.get(type);
+      return Array.isArray(src) ? src[altImageIdx ?? 0] : src;
+    }, [altImageIdx]);
 
     /**
      * Calculate the style that controls the rotation of the image
      */
     const rotationStyle = useMemo(() => {
-      const rotationString = `rotate(${position?.angle ?? 0}deg)`
+      const rotationString = `rotate(${position?.angle ?? 0}deg)`;
       return {
         transform: rotationString,
         WebkitTransform: rotationString,
-        msTransform: rotationString
-      }
-    }, [position.angle])
+        msTransform: rotationString,
+      };
+    }, [position.angle]);
 
     return (
       <Draggable
@@ -81,7 +81,7 @@ export const ElectricalCore = forwardRef(
               // Selection
               filter: isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
               WebkitFilter:
-                isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`
+                isSelected && `drop-shadow(3px 2px ${0}px ${'#888'})`,
             }}
             className={cx(styles.noDrag, 'component-handle')}
             onClick={onClick}
@@ -101,13 +101,13 @@ export const ElectricalCore = forwardRef(
                 {...rest}
                 {...port}
               />
-            )
+            );
           })}
         </div>
       </Draggable>
-    )
-  }
-)
+    );
+  },
+);
 
 ElectricalCore.propTypes = {
   /**
@@ -125,7 +125,7 @@ ElectricalCore.propTypes = {
     x: PropTypes.number,
     y: PropTypes.number,
     z: PropTypes.number,
-    angle: PropTypes.number
+    angle: PropTypes.number,
   }),
   /**
    * An array of the connection ports
@@ -136,13 +136,13 @@ ElectricalCore.propTypes = {
       type: PropTypes.string,
       position: PropTypes.shape({
         x: PropTypes.number,
-        y: PropTypes.number
+        y: PropTypes.number,
       }),
       ref: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.shape({ current: PropTypes.any })
-      ])
-    })
+        PropTypes.shape({ current: PropTypes.any }),
+      ]),
+    }),
   ),
   /**
    * The width of the component, in pixels
@@ -163,13 +163,13 @@ ElectricalCore.propTypes = {
   /**
    * The source path to a custom image to be used by the component
    */
-  imgPath: PropTypes.string
-}
+  imgPath: PropTypes.string,
+};
 
 ElectricalCore.defaultProps = {
   position: { x: 0, y: 0 },
   width: 100,
   height: 100,
   gridSize: 10,
-  altImageIdx: 0
-}
+  altImageIdx: 0,
+};

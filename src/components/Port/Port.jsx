@@ -1,15 +1,15 @@
-import React, { forwardRef, useMemo } from 'react'
-import PropTypes from 'prop-types'
+import React, { forwardRef, useMemo } from 'react';
+import PropTypes from 'prop-types';
 
-import styles from './Port.module.css'
-import { rotateCoords } from '../../util'
+import styles from './Port.module.css';
+import { rotateCoords } from '../../util';
 
 export const Port = forwardRef(
   ({ position, bounds, properties, rotation, ...rest }, ref) => {
     const realPos = useMemo(
       () => rotateCoords(position, rotation),
-      [position, rotation]
-    )
+      [position, rotation],
+    );
 
     return (
       <div
@@ -22,15 +22,15 @@ export const Port = forwardRef(
 
           // The positioning
           left: realPos.x * bounds.width - properties.radius,
-          top: realPos.y * bounds.height - properties.radius
+          top: realPos.y * bounds.height - properties.radius,
         }}
         {...rest}
       >
         <div ref={ref} className={styles.connectionPoint} />
       </div>
-    )
-  }
-)
+    );
+  },
+);
 
 Port.propTypes = {
   /**
@@ -38,34 +38,34 @@ Port.propTypes = {
    */
   position: PropTypes.shape({
     x: PropTypes.number,
-    y: PropTypes.number
+    y: PropTypes.number,
   }),
   /**
    * The bounding box of the Port's position
    */
   bounds: PropTypes.shape({
     x: PropTypes.number,
-    y: PropTypes.number
+    y: PropTypes.number,
   }),
   /**
    * Optional properties of the Port
    */
   properties: PropTypes.shape({
     radius: PropTypes.number,
-    color: PropTypes.string
+    color: PropTypes.string,
   }),
   /**
    * The rotation of the port, around its parent's bounds
    */
-  rotation: PropTypes.number
-}
+  rotation: PropTypes.number,
+};
 
 Port.defaultProps = {
   properties: {
     radius: 6,
-    color: '#bbb'
+    color: '#bbb',
   },
   position: { x: 0.5, y: 0.5 },
   bounds: { x: 1, y: 1 },
-  rotation: 0
-}
+  rotation: 0,
+};

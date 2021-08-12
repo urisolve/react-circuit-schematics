@@ -1,5 +1,5 @@
-import React from 'react'
-import { Label } from '../components/Label'
+import React from 'react';
+import { Label } from '../components/Label';
 
 export default {
   title: 'Low Level API/Label',
@@ -8,19 +8,19 @@ export default {
     docs: {
       description: {
         component:
-          'The Label component displays to the user the name, value and unit of the electrical component. It is also able to be dragged around.'
+          'The Label component displays to the user the name, value and unit of the electrical component. It is also able to be dragged around.',
       },
       source: {
-        type: 'code'
-      }
-    }
-  }
-}
+        type: 'code',
+      },
+    },
+  },
+};
 
 export const ResistorLabel = () => (
   <Label name='R1' value='10k' unit='Ω' position={{ x: 20, y: 20 }} />
-)
-export const OnlyName = () => <Label name='R1' position={{ x: 20, y: 20 }} />
+);
+export const OnlyName = () => <Label name='R1' position={{ x: 20, y: 20 }} />;
 export const CustomLabel = () => (
   <Label
     name='R1'
@@ -39,4 +39,4 @@ export const CustomLabel = () => (
       </>
     )}
   />
-)
+);

@@ -1,1 +1,1 @@
-export * from './useSchematic'
+export * from './useSchematic';

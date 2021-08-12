@@ -5,7 +5,7 @@
  * @returns Wether or not the element is an electrical component.
  */
 export const isComponent = (element) =>
-  Object.prototype.hasOwnProperty.call(element, 'ports')
+  Object.prototype.hasOwnProperty.call(element, 'ports');
 
 /**
  * Check if the given element is a Connection
@@ -15,7 +15,7 @@ export const isComponent = (element) =>
  */
 export const isConnection = (element) =>
   Object.prototype.hasOwnProperty.call(element, 'start') ||
-  Object.prototype.hasOwnProperty.call(element, 'end')
+  Object.prototype.hasOwnProperty.call(element, 'end');
 
 /**
  * Check if the given element is a Node.
@@ -24,7 +24,7 @@ export const isConnection = (element) =>
  * @returns Wether or not the element is a Node.
  */
 export const isNode = (element) =>
-  Object.prototype.hasOwnProperty.call(element, 'connections')
+  Object.prototype.hasOwnProperty.call(element, 'connections');
 
 /**
  * Check if the given element is a Port.
@@ -33,7 +33,7 @@ export const isNode = (element) =>
  * @returns Wether or not the element is a Port.
  */
 export const isPort = (element) =>
-  Object.prototype.hasOwnProperty.call(element, 'connection')
+  Object.prototype.hasOwnProperty.call(element, 'connection');
 
 /**
  * Check if the given element has a Label.
@@ -42,4 +42,4 @@ export const isPort = (element) =>
  * @returns Wether or not the element has a Label.
  */
 export const hasLabel = (element) =>
-  Object.prototype.hasOwnProperty.call(element, 'label')
+  Object.prototype.hasOwnProperty.call(element, 'label');

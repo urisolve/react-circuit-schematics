@@ -11,24 +11,24 @@
  */
 export const rotateCoords = ({ x, y }, rotation = 0) => {
   // Shift the coordinates to origin
-  x = x * 2 - 1
-  y = y * 2 - 1
+  x = x * 2 - 1;
+  y = y * 2 - 1;
 
   // Convert to polar coordinates
-  const radius = Math.sqrt(x * x + y * y)
-  let teta = Math.atan2(y, x)
+  const radius = Math.sqrt(x * x + y * y);
+  let teta = Math.atan2(y, x);
 
   // Apply the rotation
-  teta += rotation * (Math.PI / 180)
+  teta += rotation * (Math.PI / 180);
 
   // Convert back to Cartesian coordinates
-  x = radius * Math.cos(teta)
-  y = radius * Math.sin(teta)
+  x = radius * Math.cos(teta);
+  y = radius * Math.sin(teta);
 
   // Shift the coordinates back
-  x = (x + 1) / 2
-  y = (y + 1) / 2
+  x = (x + 1) / 2;
+  y = (y + 1) / 2;
 
   // Scale the position to fit the bounds
-  return { x, y }
-}
+  return { x, y };
+};

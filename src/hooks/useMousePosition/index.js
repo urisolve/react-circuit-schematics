@@ -1,1 +1,1 @@
-export * from './useMousePosition'
+export * from './useMousePosition';

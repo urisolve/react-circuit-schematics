@@ -1,16 +1,16 @@
-import React, { forwardRef, useRef } from 'react'
-import Draggable from 'react-draggable'
-import PropTypes from 'prop-types'
+import React, { forwardRef, useRef } from 'react';
+import Draggable from 'react-draggable';
+import PropTypes from 'prop-types';
 
-import cx from 'classnames'
-import styles from './Node.module.css'
+import cx from 'classnames';
+import styles from './Node.module.css';
 
 export const Node = forwardRef(
   (
     { id, position, properties, gridSize, updatePosition, isSelected, ...rest },
-    ref
+    ref,
   ) => {
-    const draggableRef = useRef()
+    const draggableRef = useRef();
 
     return (
       <Draggable
@@ -31,15 +31,15 @@ export const Node = forwardRef(
             opacity: properties.opacity ?? 1,
             backgroundColor: isSelected
               ? '#3475FF'
-              : properties.color ?? '#6495ED'
+              : properties.color ?? '#6495ED',
           }}
         >
           <div ref={ref} className={styles.connectionPoint} />
         </div>
       </Draggable>
-    )
-  }
-)
+    );
+  },
+);
 
 Node.propTypes = {
   /**
@@ -51,7 +51,7 @@ Node.propTypes = {
    */
   position: PropTypes.shape({
     x: PropTypes.number,
-    y: PropTypes.number
+    y: PropTypes.number,
   }).isRequired,
   /**
    * The optional properties fo the node
@@ -59,7 +59,7 @@ Node.propTypes = {
   properties: PropTypes.shape({
     color: PropTypes.string,
     radius: PropTypes.number,
-    opacity: PropTypes.number
+    opacity: PropTypes.number,
   }),
   /**
    * The size of the grid, i.e., the amount of pixels the drag skips
@@ -68,11 +68,11 @@ Node.propTypes = {
   /**
    * The handler that updates the position of the Node on drag
    */
-  onDragStop: PropTypes.func
-}
+  onDragStop: PropTypes.func,
+};
 
 Node.defaultProps = {
   position: { x: 0, y: 0 },
   properties: { radius: 6, color: '#6495ED', opacity: 1 },
-  gridSize: 10
-}
+  gridSize: 10,
+};

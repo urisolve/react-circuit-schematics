@@ -3,19 +3,19 @@ import React, {
   useRef,
   useState,
   useEffect,
-  useReducer
-} from 'react'
-import useDynamicRefs from 'use-dynamic-refs'
-import PropTypes from 'prop-types'
+  useReducer,
+} from 'react';
+import useDynamicRefs from 'use-dynamic-refs';
+import PropTypes from 'prop-types';
 
-import { SelectionArea } from '../SelectionArea'
-import { ElectricalCore } from '../ElectricalCore'
-import { Connection } from '../Connection'
-import { Node } from '../Node'
-import { Label } from '../Label'
+import { SelectionArea } from '../SelectionArea';
+import { ElectricalCore } from '../ElectricalCore';
+import { Connection } from '../Connection';
+import { Node } from '../Node';
+import { Label } from '../Label';
 
-import { snapValueToGrid } from '../../util'
-import { useMousePosition } from '../../hooks/useMousePosition'
+import { snapValueToGrid } from '../../util';
+import { useMousePosition } from '../../hooks/useMousePosition';
 
 export const Schematic = ({
   schematic,
@@ -28,23 +28,23 @@ export const Schematic = ({
   children,
   ...rest
 }) => {
-  const [getRef, setRef] = useDynamicRefs()
-  const canvasRef = useRef()
-  const mousePosition = useMousePosition(canvasRef)
+  const [getRef, setRef] = useDynamicRefs();
+  const canvasRef = useRef();
+  const mousePosition = useMousePosition(canvasRef);
 
-  const [selectingItems, setSelectingItems] = useState(new Set())
-  const [selectedItems, setSelectedItems] = useState(new Set())
+  const [selectingItems, setSelectingItems] = useState(new Set());
+  const [selectedItems, setSelectedItems] = useState(new Set());
 
   // Work-around for react-xarrows updating the connection.
-  const [, reRender] = useReducer(() => ({}), {})
-  const renderCount = useRef(0)
+  const [, reRender] = useReducer(() => ({}), {});
+  const renderCount = useRef(0);
   useEffect(() => {
-    renderCount.current += 1
+    renderCount.current += 1;
     if (renderCount.current === 2) {
-      reRender()
-      renderCount.current = 0
+      reRender();
+      renderCount.current = 0;
     }
-  })
+  });
 
   /**
    * Update the coordinates of a Component.
@@ -56,19 +56,19 @@ export const Schematic = ({
   const updatePosition = useCallback(
     (id, { x, y }, isLabel = false) => {
       // Snap the values to the grid
-      x = snapValueToGrid(x, gridSize)
-      y = snapValueToGrid(y, gridSize)
+      x = snapValueToGrid(x, gridSize);
+      y = snapValueToGrid(y, gridSize);
 
       // Apply the new position
       schematic.editById(id, (elem) => {
-        const positionObject = isLabel ? elem.label.position : elem.position
-        positionObject.x = x
-        positionObject.y = y
-        return elem
-      })
+        const positionObject = isLabel ? elem.label.position : elem.position;
+        positionObject.x = x;
+        positionObject.y = y;
+        return elem;
+      });
     },
-    [schematic?.editById, gridSize]
-  )
+    [schematic?.editById, gridSize],
+  );
 
   return (
     <div
@@ -86,7 +86,7 @@ export const Schematic = ({
           ${gridColor} 1px,
           transparent 1px
           )`,
-        backgroundSize: `${gridSize}px ${gridSize}px`
+        backgroundSize: `${gridSize}px ${gridSize}px`,
       }}
       {...rest}
     >
@@ -105,7 +105,7 @@ export const Schematic = ({
       />
 
       {schematic?.data?.components?.map((comp) => {
-        comp.ports.forEach((port) => (port.ref = setRef(port.id)))
+        comp.ports.forEach((port) => (port.ref = setRef(port.id)));
         return (
           <ElectricalCore
             {...comp}
@@ -117,7 +117,7 @@ export const Schematic = ({
             isSelected={selectedItems.has(comp.id)}
             disabled={readOnly}
           />
-        )
+        );
       })}
 
       {schematic?.data?.nodes?.map((node) => (
@@ -148,7 +148,7 @@ export const Schematic = ({
               isSelected={selectedItems.has(conn.id)}
               disabled={readOnly}
             />
-          )
+          ),
       )}
 
       {schematic?.labels?.map((label) => (
@@ -167,8 +167,8 @@ export const Schematic = ({
         >{`${mousePosition.x || 0}, ${mousePosition.y || 0}`}</p>
       )}
     </div>
-  )
-}
+  );
+};
 
 Schematic.propTypes = {
   /**
@@ -198,8 +198,8 @@ Schematic.propTypes = {
   /**
    * The color of the grid dots
    */
-  gridColor: PropTypes.string
-}
+  gridColor: PropTypes.string,
+};
 
 Schematic.defaultProps = {
   schematic: {},
@@ -208,5 +208,5 @@ Schematic.defaultProps = {
   readOnly: false,
   showCoords: true,
   gridSize: 10,
-  gridColor: '#777'
-}
+  gridColor: '#777',
+};

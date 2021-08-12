@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
-import { ElectricalCore } from '../components/ElectricalCore'
-import { Schematic } from '../components/Schematic'
-import ANDGate from './and-gate.png'
+import { ElectricalCore } from '../components/ElectricalCore';
+import { Schematic } from '../components/Schematic';
+import ANDGate from './and-gate.png';
 
 export default {
   title: 'Low Level API/ElectricalCore',
@@ -11,14 +11,14 @@ export default {
     docs: {
       description: {
         component:
-          'All electrical components are created from this one. `<ElectricalCore />` takes care of all the logic that comes with assembling the component itself. You can use this component to make your own custom electrical components.'
+          'All electrical components are created from this one. `<ElectricalCore />` takes care of all the logic that comes with assembling the component itself. You can use this component to make your own custom electrical components.',
       },
       source: {
-        type: 'code'
-      }
-    }
-  }
-}
+        type: 'code',
+      },
+    },
+  },
+};
 
 export const ResistorExample = () => (
   <Schematic height={150} width={200}>
@@ -29,35 +29,35 @@ export const ResistorExample = () => (
         name: 'R',
         value: '10k',
         unit: 'Ω',
-        position: { x: 10, y: 0 }
+        position: { x: 10, y: 0 },
       }}
       ports={[
         {
           type: 'hybrid',
-          position: { x: 0, y: 0.5 }
+          position: { x: 0, y: 0.5 },
         },
         {
           type: 'hybrid',
-          position: { x: 1, y: 0.5 }
-        }
+          position: { x: 1, y: 0.5 },
+        },
       ]}
     />
   </Schematic>
-)
+);
 
 export const AlternateImages = () => {
   const data = {
     type: 'DC Voltage Source',
-    ports: [{ position: { x: 0.5, y: 0 } }, { position: { x: 0.5, y: 1 } }]
-  }
+    ports: [{ position: { x: 0.5, y: 0 } }, { position: { x: 0.5, y: 1 } }],
+  };
 
   return (
     <Schematic height={150} width={200}>
       <ElectricalCore position={{ x: 0, y: 30 }} {...data} />
       <ElectricalCore position={{ x: 100, y: 30 }} altImageIdx={1} {...data} />
     </Schematic>
-  )
-}
+  );
+};
 
 export const CustomComponent = () => (
   <Schematic height={150} width={200}>
@@ -71,17 +71,17 @@ export const CustomComponent = () => (
       ports={[
         {
           type: 'input',
-          position: { x: 0.1, y: 0.3 }
+          position: { x: 0.1, y: 0.3 },
         },
         {
           type: 'input',
-          position: { x: 0.1, y: 0.7 }
+          position: { x: 0.1, y: 0.7 },
         },
         {
           type: 'output',
-          position: { x: 0.9, y: 0.5 }
-        }
+          position: { x: 0.9, y: 0.5 },
+        },
       ]}
     />
   </Schematic>
-)
+);

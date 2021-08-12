@@ -1,34 +1,34 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import lodash from 'lodash'
+import { useCallback, useEffect, useRef, useState } from 'react';
+import lodash from 'lodash';
 
 export const useMousePosition = (ref, fps = 30) => {
-  const [mousePosition, setMousePosition] = useState({ x: NaN, y: NaN })
-  const area = useRef(null)
+  const [mousePosition, setMousePosition] = useState({ x: NaN, y: NaN });
+  const area = useRef(null);
 
   useEffect(() => {
-    if (!ref.current) return
-    area.current = ref.current.getBoundingClientRect()
-  }, [ref])
+    if (!ref.current) return;
+    area.current = ref.current.getBoundingClientRect();
+  }, [ref]);
 
   const calcMousePosition = useCallback(
     lodash.throttle((event) => {
       setMousePosition({
         x: Math.floor(event.pageX - area.current.left),
-        y: Math.floor(event.pageY - area.current.top)
-      })
+        y: Math.floor(event.pageY - area.current.top),
+      });
     }, 1000 / fps),
-    [setMousePosition, fps]
-  )
+    [setMousePosition, fps],
+  );
 
   useEffect(() => {
-    if (!ref.current) return
-    ref.current.addEventListener('mousemove', calcMousePosition)
+    if (!ref.current) return;
+    ref.current.addEventListener('mousemove', calcMousePosition);
 
     return () => {
-      if (!ref.current) return
-      ref.current.removeEventListener('mousemove', calcMousePosition)
-    }
-  }, [ref])
+      if (!ref.current) return;
+      ref.current.removeEventListener('mousemove', calcMousePosition);
+    };
+  }, [ref]);
 
-  return mousePosition
-}
+  return mousePosition;
+};

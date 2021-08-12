@@ -1,1 +1,1 @@
-export * from './ElectricalCore'
+export * from './ElectricalCore';

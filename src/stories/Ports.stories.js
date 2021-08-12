@@ -1,5 +1,5 @@
-import React from 'react'
-import { Port } from '../components/Port'
+import React from 'react';
+import { Port } from '../components/Port';
 
 export default {
   title: 'Low Level API/Port',
@@ -8,17 +8,17 @@ export default {
     docs: {
       description: {
         component:
-          'The Port component is what allows the user to create connections between components'
+          'The Port component is what allows the user to create connections between components',
       },
       source: {
-        type: 'code'
-      }
-    }
-  }
-}
+        type: 'code',
+      },
+    },
+  },
+};
 
 export const Simple = () => (
   <div style={{ position: 'relative' }}>
     <Port />
   </div>
-)
+);

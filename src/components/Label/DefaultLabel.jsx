@@ -1,13 +1,13 @@
-import React, { useRef } from 'react'
-import styles from './Label.module.css'
+import React, { useRef } from 'react';
+import styles from './Label.module.css';
 
 const setContentEditable = (ref, val) => {
-  ref.current.contentEditable = val
-}
+  ref.current.contentEditable = val;
+};
 
 export const DefaultLabel = (props) => {
-  const nameRef = useRef()
-  const valueRef = useRef()
+  const nameRef = useRef();
+  const valueRef = useRef();
 
   return (
     <b>
@@ -41,5 +41,5 @@ export const DefaultLabel = (props) => {
         </>
       )}
     </b>
-  )
-}
+  );
+};

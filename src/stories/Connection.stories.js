@@ -1,32 +1,32 @@
-import React, { useRef } from 'react'
+import React, { useRef } from 'react';
 
-import { Schematic } from '../components/Schematic'
-import { Connection } from '../components/Connection'
-import { Node } from '../components/Node'
+import { Schematic } from '../components/Schematic';
+import { Connection } from '../components/Connection';
+import { Node } from '../components/Node';
 
 export default {
   title: 'Low Level API/Connection',
   component: Connection,
   argTypes: {
     start: { control: '' },
-    end: { control: '' }
+    end: { control: '' },
   },
   parameters: {
     docs: {
       description: {
         component:
-          'The Connection component allows the user to connect Ports and Nodes.'
+          'The Connection component allows the user to connect Ports and Nodes.',
       },
       source: {
-        type: 'code'
-      }
-    }
-  }
-}
+        type: 'code',
+      },
+    },
+  },
+};
 
 export const Simple = () => {
-  const start = useRef()
-  const end = useRef()
+  const start = useRef();
+  const end = useRef();
 
   return (
     <Schematic height={120} width={220}>
@@ -35,12 +35,12 @@ export const Simple = () => {
 
       <Connection start={start} end={end} />
     </Schematic>
-  )
-}
+  );
+};
 
 export const Labeled = () => {
-  const start = useRef()
-  const end = useRef()
+  const start = useRef();
+  const end = useRef();
 
   return (
     <Schematic height={100} width={220}>
@@ -53,5 +53,5 @@ export const Labeled = () => {
         label={{ name: 'Hello', position: { x: 100, y: 30 } }}
       />
     </Schematic>
-  )
-}
+  );
+};
