@@ -7,6 +7,7 @@ import {
   hasLabel,
   isComponent,
   isConnection,
+  isNode,
   isPort,
   rotateCoords,
   snapPosToGrid,
@@ -216,18 +217,38 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
         // Make a clone of the current schematic
         const newSchematic = lodash.cloneDeep(oldSchematic);
 
-        // Force element into array format
+        // Force ids into array format
         if (!(ids instanceof Array)) ids = [ids];
 
         // Delete each of the corresponding elements
-        for (const id of ids)
-          for (const type in newSchematic)
+        for (const id of ids) {
+          for (const type in newSchematic) {
+            // Find the element
+            const elem = lodash.find(newSchematic[type], { id });
+
+            // Remove all connections if the element is a node
+            if (isNode(elem ?? {})) {
+              newSchematic.connections.filter(
+                (conn) => conn.start !== id && conn.end !== id,
+              );
+            }
+
+            // Remove all connections to the ports of the component
+            else if (isComponent(elem ?? {})) {
+              for (const port of elem.ports) {
+                newSchematic.connections = lodash.reject(
+                  newSchematic.connections,
+                  { id: port.connection },
+                );
+              }
+            }
+
+            // Delete the element with the given id
             newSchematic[type] = newSchematic[type].filter(
               (elem) => elem.id !== id,
             );
-
-        // TODO: Make the connections stay in the same place
-        console.error('Make the connections stay in the same place');
+          }
+        }
 
         // If the changes are valid, save the old schematic
         if (!lodash.isEqual(oldSchematic, newSchematic))
@@ -254,19 +275,24 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
    * @param {Boolean} If If it should save the changes to the history.
    */
   const editById = useCallback(
-    (id, edits, saveChanges = true) => {
+    (ids, edits, saveChanges = true) => {
       setSchematic((oldSchematic) => {
         // Make a clone of the current schematic
         const newSchematic = lodash.cloneDeep(oldSchematic);
 
+        // Force ids into array format
+        if (!(ids instanceof Array)) ids = [ids];
+
         // Apply the edits
-        for (const type in newSchematic) {
-          newSchematic[type] = newSchematic[type].map((elem) => {
-            if (elem.id !== id) return elem;
-            return lodash.isFunction(edits)
-              ? edits(elem)
-              : { ...elem, ...edits };
-          });
+        for (const id of ids) {
+          for (const type in newSchematic) {
+            newSchematic[type] = newSchematic[type].map((elem) => {
+              if (elem.id !== id) return elem;
+              return lodash.isFunction(edits)
+                ? edits(elem)
+                : { ...elem, ...edits };
+            });
+          }
         }
 
         // If the changes are valid, save the old schematic
