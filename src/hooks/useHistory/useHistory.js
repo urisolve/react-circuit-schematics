@@ -24,7 +24,7 @@ export const useHistory = (setter, maxLength) => {
         if (hist.undoStack.push(change) > maxLength) hist.undoStack.shift();
         return hist;
       }),
-    [setHistory],
+    [setHistory, maxLength],
   );
 
   /**
@@ -56,7 +56,7 @@ export const useHistory = (setter, maxLength) => {
         return curr;
       });
     },
-    [setter, setHistory],
+    [setter, setHistory, maxLength],
   );
 
   /**
@@ -76,7 +76,7 @@ export const useHistory = (setter, maxLength) => {
   );
   const canRedo = useMemo(
     () => !!history.redoStack.length,
-    [history.undoStack.length],
+    [history.redoStack.length],
   );
 
   /**

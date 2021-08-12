@@ -29,13 +29,14 @@ export const CustomLabel = () => (
     position={{ x: 20, y: 20 }}
     as={({ name, value, unit }) => (
       <>
-        <div>Hi, I'm a custom label</div>
-        <div>
+        <p>
+          Hi, I'm a custom label
+          <br />
           My name is <b>{name}</b> and I'm worth{' '}
           <b>
             {value} {unit}
           </b>
-        </div>
+        </p>
       </>
     )}
   />

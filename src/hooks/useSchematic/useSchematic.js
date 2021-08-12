@@ -83,7 +83,7 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
             : null,
         ),
       ),
-    [schematic],
+    [items],
   );
 
   /**
@@ -151,7 +151,7 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
 
       return schematic;
     });
-  }, [setSchematic, schematic, items]);
+  }, [setSchematic, schematic, items, getRef]);
 
   /**
    * Adds an element to the schematic.
@@ -194,7 +194,7 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
         return newSchematic;
       });
     },
-    [setSchematic],
+    [setSchematic, history, options.gridSize],
   );
 
   /**
@@ -208,7 +208,7 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
    */
   const deleteById = useCallback(
     (id) => {
-      useSchematic((oldSchematic) => {
+      setSchematic((oldSchematic) => {
         // Make a clone of the current schematic
         const newSchematic = lodash.cloneDeep(oldSchematic);
 
@@ -228,7 +228,7 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
         return newSchematic;
       });
     },
-    [setSchematic],
+    [setSchematic, history],
   );
 
   /**
@@ -268,7 +268,7 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
         return newSchematic;
       });
     },
-    [setSchematic],
+    [setSchematic, history],
   );
 
   /**

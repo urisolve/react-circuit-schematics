@@ -8,7 +8,7 @@ export const useMousePosition = (ref, fps = 30) => {
   useEffect(() => {
     if (!ref.current) return;
     area.current = ref.current.getBoundingClientRect();
-  }, [ref]);
+  }, [ref, area]);
 
   const calcMousePosition = useCallback(
     lodash.throttle((event) => {
@@ -17,18 +17,19 @@ export const useMousePosition = (ref, fps = 30) => {
         y: Math.floor(event.pageY - area.current.top),
       });
     }, 1000 / fps),
-    [setMousePosition, fps],
+    [setMousePosition, fps, area],
   );
 
   useEffect(() => {
     if (!ref.current) return;
     ref.current.addEventListener('mousemove', calcMousePosition);
+    const temp = ref;
 
     return () => {
-      if (!ref.current) return;
-      ref.current.removeEventListener('mousemove', calcMousePosition);
+      if (!temp.current) return;
+      temp.current.removeEventListener('mousemove', calcMousePosition);
     };
-  }, [ref]);
+  }, [ref, calcMousePosition]);
 
   return mousePosition;
 };
