@@ -51,7 +51,7 @@ export const UndoAndRedo = () => {
   );
 };
 
-export const BuildCircuit = () => {
+export const BuildResistorCircuit = () => {
   const [width, height] = [800, 500];
   const { schematic, selection } = useSchematic();
 
@@ -98,6 +98,13 @@ export const BuildCircuit = () => {
     schematic.deleteById([...selection.selectedItems]);
   }, [schematic, selection.selectedItems]);
 
+  const rotateSelection = useCallback(() => {
+    schematic.editById([...selection.selectedItems], (elem) => {
+      elem.position.angle = (elem.position.angle ?? 0) + 90;
+      return elem;
+    });
+  }, [schematic, selection.selectedItems]);
+
   return (
     <>
       <button onClick={addResistor}>Add Component</button>
@@ -109,6 +116,12 @@ export const BuildCircuit = () => {
         disabled={!selection.selectedItems.size}
       >
         Delete
+      </button>
+      <button
+        onClick={rotateSelection}
+        disabled={!selection.selectedItems.size}
+      >
+        Rotate
       </button>
 
       <Schematic
