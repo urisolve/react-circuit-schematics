@@ -173,6 +173,7 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
         const newSchematic = lodash.cloneDeep(oldSchematic);
 
         // Force element into array format
+        if (elements instanceof Set) elements = [...elements];
         if (!(elements instanceof Array)) elements = [elements];
 
         // Add all of the given elements to the schematic
@@ -218,6 +219,7 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
         const newSchematic = lodash.cloneDeep(oldSchematic);
 
         // Force ids into array format
+        if (ids instanceof Set) ids = [...ids];
         if (!(ids instanceof Array)) ids = [ids];
 
         // Delete each of the corresponding elements
@@ -281,6 +283,7 @@ export const useSchematic = (initialSchematic = {}, options = {}) => {
         const newSchematic = lodash.cloneDeep(oldSchematic);
 
         // Force ids into array format
+        if (ids instanceof Set) ids = [...ids];
         if (!(ids instanceof Array)) ids = [ids];
 
         // Apply the edits

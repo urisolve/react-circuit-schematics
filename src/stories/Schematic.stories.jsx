@@ -71,6 +71,7 @@ export const BuildResistorCircuit = () => {
   const randomPos = randomPosGenerator(0, width - 100, 0, height - 100);
   const genRandomPos = useCallback(() => randomPos.next().value, [randomPos]);
 
+  // Adds a resistor at a random location
   const addResistor = useCallback(() => {
     schematic.add({
       type: 'Resistor',
@@ -82,10 +83,12 @@ export const BuildResistorCircuit = () => {
     });
   }, [schematic, genRandomPos]);
 
+  // Adds a Node at a random location
   const addNode = useCallback(() => {
     schematic.add({ position: genRandomPos() });
   }, [schematic, genRandomPos]);
 
+  // Adds a connection at a random location
   const addConnection = useCallback(() => {
     const node1 = { id: uuidv4(), position: genRandomPos() };
     const node2 = { id: uuidv4(), position: genRandomPos() };
@@ -94,10 +97,12 @@ export const BuildResistorCircuit = () => {
     schematic.add([node1, node2, connection]);
   }, [schematic, genRandomPos]);
 
+  // Deletes all of the currently selected elements
   const deleteSelection = useCallback(() => {
-    schematic.deleteById([...selection.selectedItems]);
+    schematic.deleteById(selection.selectedItems);
   }, [schematic, selection.selectedItems]);
 
+  // Rotate all of the currently selected elements
   const rotateSelection = useCallback(() => {
     schematic.editById([...selection.selectedItems], (elem) => {
       elem.position.angle = (elem.position.angle ?? 0) + 90;
