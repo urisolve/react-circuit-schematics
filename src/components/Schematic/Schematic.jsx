@@ -78,6 +78,10 @@ export const Schematic = ({
           )`,
         backgroundSize: `${gridSize}px ${gridSize}px`,
 
+        // Shadow
+        border: '1px solid #eee',
+        boxShadow: '0px 0px 8px #eee',
+
         // Custom Style
         ...style,
       }}
