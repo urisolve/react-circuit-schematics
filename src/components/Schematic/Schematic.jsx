@@ -178,10 +178,6 @@ Schematic.propTypes = {
    */
   readOnly: PropTypes.bool,
   /**
-   * Show the coordinates of the mouse on the schematic
-   */
-  showCoords: PropTypes.bool,
-  /**
    * The size of the grid units, in pixels
    */
   gridSize: PropTypes.number,
@@ -196,7 +192,6 @@ Schematic.defaultProps = {
   width: '100%',
   height: '100%',
   readOnly: false,
-  showCoords: true,
   gridSize: 10,
   gridColor: '#777',
 };
