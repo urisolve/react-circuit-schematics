@@ -54,7 +54,7 @@ export const UndoAndRedo = () => {
 
 export const BuildCircuit = () => {
   const [width, height] = [800, 500];
-  const { schematic, selection } = useSchematic();
+  const { schematic, selection, history } = useSchematic();
 
   // Generator function for random positions
   function* randomPosGenerator(minX, maxX, minY, maxY) {
@@ -125,6 +125,7 @@ export const BuildCircuit = () => {
       <button onClick={addNode}>Add Node</button>
       <button onClick={addConnection}>Add Connection</button>
       <br />
+
       <button
         onClick={deleteSelection}
         disabled={!selection.selectedItems.size}
@@ -136,6 +137,14 @@ export const BuildCircuit = () => {
         disabled={!selection.selectedItems.size}
       >
         Rotate
+      </button>
+      <br />
+
+      <button onClick={history.undo} disabled={!history.canUndo}>
+        Undo
+      </button>
+      <button onClick={history.redo} disabled={!history.canRedo}>
+        Redo
       </button>
 
       <Schematic
