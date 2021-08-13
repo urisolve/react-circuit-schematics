@@ -9,7 +9,6 @@ import { Node } from '../Node';
 import { Label } from '../Label';
 
 import { snapValueToGrid } from '../../util';
-import { useMousePosition } from '../../hooks/useMousePosition';
 
 export const Schematic = ({
   schematic,
@@ -17,7 +16,6 @@ export const Schematic = ({
   width,
   height,
   readOnly,
-  showCoords,
   gridSize,
   gridColor,
   children,
@@ -25,7 +23,6 @@ export const Schematic = ({
 }) => {
   const [getRef, setRef] = useDynamicRefs();
   const canvasRef = useRef();
-  const mousePosition = useMousePosition(canvasRef);
 
   // Work-around for react-xarrows updating the connection.
   const [, reRender] = useReducer(() => ({}), {});
@@ -151,12 +148,6 @@ export const Schematic = ({
           disabled={readOnly}
         />
       ))}
-
-      {!readOnly && showCoords && (
-        <p
-          style={{ margin: '10px', position: 'absolute', top: 0, right: 0 }}
-        >{`${mousePosition.x || 0}, ${mousePosition.y || 0}`}</p>
-      )}
     </div>
   );
 };
