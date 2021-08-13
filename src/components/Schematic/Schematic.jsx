@@ -18,6 +18,7 @@ export const Schematic = ({
   readOnly,
   gridSize,
   gridColor,
+  style,
   children,
   ...rest
 }) => {
@@ -76,6 +77,9 @@ export const Schematic = ({
           transparent 1px
           )`,
         backgroundSize: `${gridSize}px ${gridSize}px`,
+
+        // Custom Style
+        ...style,
       }}
       {...rest}
     >
