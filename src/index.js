@@ -8,3 +8,6 @@ export * from './components/Label';
 export * from './components/Node';
 export * from './components/Port';
 export * from './components/Schematic';
+
+// Assets
+export * from './assets';

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import styles from './ElectricalCore.module.css';
 import cx from 'classnames';
 
-import { svgMap } from '../../../assets';
+import { svgMap } from '../../assets';
 import { Port } from '../Port';
 
 export const ElectricalCore = forwardRef(
