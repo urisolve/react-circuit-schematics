@@ -100,12 +100,17 @@ export const Schematic = ({
       />
 
       {schematic?.data?.components?.map((comp) => {
-        comp.ports.forEach((port) => (port.ref = setRef(port.id)));
+        const portsRefMap = new Map();
+        comp.ports.forEach((port) => {
+          portsRefMap.set(port.id, setRef(port.id));
+        });
+
         return (
           <ElectricalCore
             {...comp}
             key={comp.id}
             ref={setRef(comp.id)}
+            portsRefMap={portsRefMap}
             gridSize={gridSize}
             updatePosition={updatePosition}
             onDrag={reRender}

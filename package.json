@@ -1,6 +1,6 @@
 {
   "name": "react-circuit-schematics",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A React library that allows you to draw circuit schematics",
   "author": "urisolve",
   "license": "MIT",

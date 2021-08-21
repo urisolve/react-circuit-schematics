@@ -1,5 +1,4 @@
 import React, { useRef, useMemo, forwardRef } from 'react';
-import useDynamicRefs from 'use-dynamic-refs';
 import Draggable from 'react-draggable';
 import PropTypes from 'prop-types';
 
@@ -16,6 +15,7 @@ export const ElectricalCore = forwardRef(
       type,
       position,
       ports,
+      portsRefMap,
       width,
       height,
       gridSize,
@@ -28,7 +28,6 @@ export const ElectricalCore = forwardRef(
     },
     ref,
   ) => {
-    const [getRef] = useDynamicRefs();
     const draggableRef = useRef();
 
     /**
@@ -101,7 +100,7 @@ export const ElectricalCore = forwardRef(
             return (
               <Port
                 key={port.id}
-                ref={getRef(port.id)}
+                ref={portsRefMap.get(port.id)}
                 bounds={{ width, height }}
                 rotation={position?.angle}
                 {...rest}
